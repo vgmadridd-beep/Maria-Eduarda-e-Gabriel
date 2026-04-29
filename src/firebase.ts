@@ -14,6 +14,11 @@ const firebaseConfig = {
 
 const databaseId = import.meta.env.VITE_FIREBASE_DATABASE_ID;
 
+// ValidaÃ§Ã£o bÃ¡sica para evitar tela branca sem erros claros
+if (!firebaseConfig.apiKey && typeof window !== 'undefined') {
+  console.warn("Firebase configuration is missing. If you are on Vercel, make sure to add Environment Variables starting with VITE_FIREBASE_.");
+}
+
 const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app, databaseId);
+export const db = getFirestore(app, databaseId || '(default)');
 export const auth = getAuth();
