@@ -408,13 +408,13 @@ export default function App() {
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.8, ease: "easeInOut" }}
-            className="fixed inset-0 z-[100] bg-[#FAF8F5] flex items-center justify-center p-6 text-center"
+            className="fixed inset-0 z-[100] bg-[#FAF8F5] flex items-start md:items-center justify-center p-4 md:p-6 text-center overflow-y-auto"
           >
             <motion.div 
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.3 }}
-              className="max-w-3xl mx-auto space-y-8 text-center flex flex-col items-center"
+              className="max-w-3xl mx-auto py-8 space-y-8 text-center flex flex-col items-center"
             >
               <div className="flex justify-center">
                 <div className="p-6 border border-[#D4AF37]/30 rounded-full">
@@ -455,7 +455,7 @@ export default function App() {
                   setShowWelcome(false);
                   setActiveTab('rsvp');
                 }}
-                className="mt-8 px-8 md:px-12 py-3 md:py-4 bg-[#8C734B] text-white rounded-full font-medium tracking-widest uppercase text-[10px] md:text-xs shadow-xl shadow-[#8C734B]/20 hover:bg-[#765F3A] transition-all"
+                className="mt-4 mb-4 px-8 md:px-12 py-3 md:py-4 bg-[#8C734B] text-white rounded-full font-medium tracking-widest uppercase text-[10px] md:text-xs shadow-xl shadow-[#8C734B]/20 hover:bg-[#765F3A] transition-all"
               >
                 Prosseguir para Confirmação
               </motion.button>
