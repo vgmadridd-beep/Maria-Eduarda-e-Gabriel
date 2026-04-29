@@ -422,27 +422,27 @@ export default function App() {
                 </div>
               </div>
               
-              <div className="text-[#4A4238] leading-relaxed font-serif italic text-lg space-y-6 w-full flex flex-col items-center">
-                <p className="font-[Georgia] text-2xl md:text-3xl text-[#8C734B] not-italic leading-tight text-center w-[1000px] font-normal">
-                  Sejam bem-vindos à <span className="font-normal w-auto">Confirmação de Presença e Lista de Presentes</span>
+              <div className="text-[#4A4238] leading-relaxed font-serif italic text-base md:text-lg space-y-6 w-full flex flex-col items-center">
+                <p className="font-[Georgia] text-xl md:text-3xl text-[#8C734B] not-italic leading-tight text-center max-w-4xl font-normal px-4">
+                  Sejam bem-vindos à <span className="font-normal block sm:inline">Confirmação de Presença e Lista de Presentes</span>
                 </p>
-                <div className="space-y-4 text-lg w-full flex flex-col items-center">
+                <div className="space-y-4 text-base md:text-lg w-full flex flex-col items-center px-4">
                   <p className="text-[#8c734b] max-w-[700px] mx-auto text-center">
-                    É uma alegria ter você aqui! <br/>
+                    É uma alegria ter você aqui! <br className="hidden sm:block"/>
                     Este site foi criado para a melhor organização do grande dia de Maria Eduarda e Gabriel e para que cada convidado possa oferecer um presente único e especial para os noivos.
                   </p>
                   
-                  <div className="bg-[#FAF8F5] p-6 rounded-xl border border-[#D4AF37]/10 space-y-3 max-w-[700px] mx-auto text-center">
-                    <p className="font-medium text-[#8C734B] not-italic uppercase tracking-widest text-xs">
+                  <div className="bg-[#FAF8F5] p-6 rounded-xl border border-[#D4AF37]/10 space-y-3 max-w-[700px] mx-auto text-center shadow-sm">
+                    <p className="font-medium text-[#8C734B] not-italic uppercase tracking-widest text-[10px]">
                       Passo a Passo:
                     </p>
-                    <p className="text-base text-[#8c734b] not-italic leading-relaxed max-w-[600px] mx-auto">
-                      1. Primeiro, <span className="font-bold border-[#8c734b] text-[#8c734b]">confirme sua presença</span> na aba correspondente.<br/>
-                      2. Depois, escolha um presente na lista. <span className="font-bold text-[#8C734B]">Por favor, selecione o presente aqui no site antes de comprar</span> — assim evitamos presentes repetidos e cada um poderá presentear os noivos de um jeito exclusivo.<br/>
-                      3. Ao final da sua escolha, sinta-se à vontade para deixar um recado carinhoso.
+                    <p className="text-sm md:text-base text-[#8c734b] not-italic leading-relaxed max-w-[600px] mx-auto">
+                      1. Primeiro, <span className="font-bold">confirme sua presença</span> na aba correspondente.<br/>
+                      2. Depois, escolha um presente na lista. <span className="font-bold text-[#8C734B]">Por favor, selecione o presente aqui no site antes de comprar</span> — assim evitamos presentes repetidos.<br/>
+                      3. Ao final, sinta-se à vontade para deixar um recado.
                     </p>
                   </div>
-                  <p className="text-sm text-[#A69372] italic max-w-[551px] mx-auto text-center">
+                  <p className="text-[10px] md:text-sm text-[#A69372] italic max-w-[551px] mx-auto text-center opacity-80">
                     * Caso você tenha pensado em algo especial que não esteja na lista, não tem problema! Sinta-se à vontade para presentear como seu coração desejar.
                   </p>
                 </div>
@@ -455,7 +455,7 @@ export default function App() {
                   setShowWelcome(false);
                   setActiveTab('rsvp');
                 }}
-                className="mt-8 px-12 py-4 bg-[#8C734B] text-white rounded-full font-medium tracking-widest uppercase text-xs shadow-xl shadow-[#8C734B]/20 hover:bg-[#765F3A] transition-all"
+                className="mt-8 px-8 md:px-12 py-3 md:py-4 bg-[#8C734B] text-white rounded-full font-medium tracking-widest uppercase text-[10px] md:text-xs shadow-xl shadow-[#8C734B]/20 hover:bg-[#765F3A] transition-all"
               >
                 Prosseguir para Confirmação
               </motion.button>
@@ -482,16 +482,17 @@ export default function App() {
           <div className="mb-4 md:mb-6 inline-block p-3 md:p-4 border border-[#D4AF37] rounded-full">
             <Heart className="w-6 h-6 md:w-8 md:h-8 text-[#D4AF37] fill-[#D4AF37]/10" />
           </div>
-          <h1 className="text-4xl sm:text-5xl md:text-8xl font-accent italic text-[#8C734B] mb-4 md:mb-6 tracking-tight leading-tight md:leading-none">
+          <h1 className="text-3xl sm:text-5xl md:text-8xl font-accent italic text-[#8C734B] mb-4 md:mb-6 tracking-tight leading-tight md:leading-none px-4">
             Maria Eduarda & Gabriel
           </h1>
-          <div className="flex flex-wrap items-center justify-center gap-2 md:gap-4 text-[#D4AF37] uppercase tracking-[0.2em] md:tracking-[0.3em] font-light text-xs md:text-base px-4">
-            <div className="hidden sm:block h-px w-8 bg-[#D4AF37]/30" />
+          <div className="flex flex-wrap items-center justify-center gap-2 md:gap-4 text-[#D4AF37] uppercase tracking-[0.15em] md:tracking-[0.3em] font-light text-[10px] md:text-base px-4">
+            <div className="hidden sm:block h-px w-4 md:w-8 bg-[#D4AF37]/30" />
             <span>1 de Agosto de 2026</span>
-            <div className="hidden sm:block h-px w-8 bg-[#D4AF37]/30" />
+            <div className="hidden sm:block h-px w-4 md:w-8 bg-[#D4AF37]/30" />
           </div>
-          <p className="mt-6 md:mt-8 font-serif italic text-base md:text-lg text-[#A69372]">
-            "O amor é o tempero da vida"
+          <p className="mt-6 md:mt-8 font-serif italic text-sm md:text-lg text-[#A69372] max-w-2xl mx-auto px-6 leading-relaxed">
+            "²⁴ Por essa razão, o homem deixará pai e mãe e se unirá à sua mulher, e eles se tornarão uma só carne."
+            <span className="block mt-2 text-[9px] md:text-xs uppercase tracking-widest font-sans not-italic font-bold">Gênesis 2:24</span>
           </p>
         </motion.div>
       </header>
@@ -534,7 +535,7 @@ export default function App() {
         </div>
       </div>
 
-      <main className="max-w-6xl mx-auto py-12 px-4 md:px-8">
+      <main className="max-w-6xl mx-auto py-8 md:py-12 px-4 md:px-8">
         <AnimatePresence mode="wait">
           {activeTab === 'rsvp' ? (
             <motion.div 
@@ -542,14 +543,14 @@ export default function App() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="max-w-xl mx-auto space-y-12"
+              className="max-w-xl mx-auto space-y-8 md:space-y-12"
             >
               <div className="text-center relative">
-                <h2 className="text-3xl font-serif text-[#8C734B] mb-4">Confirmação de Presença</h2>
-                <p className="text-[#A69372] text-sm">Sua presença é essencial para completar nossa felicidade!</p>
+                <h2 className="text-2xl md:text-3xl font-serif text-[#8C734B] mb-2 md:mb-4 px-4">Confirmação de Presença</h2>
+                <p className="text-[#A69372] text-[10px] md:text-sm px-6">Sua presença é essencial para completar nossa felicidade!</p>
               </div>
 
-              <form onSubmit={handleRsvp} className="bg-white p-8 rounded-2xl border border-[#E8E2D8] shadow-sm space-y-6">
+              <form onSubmit={handleRsvp} className="bg-white p-6 md:p-8 rounded-2xl border border-[#E8E2D8] shadow-sm space-y-6">
                 <div className="space-y-4">
                   <div className="space-y-3">
                     <label className="block text-[10px] font-bold uppercase tracking-widest text-[#A69372] mb-2">Nomes Completos dos Convidados</label>
@@ -605,12 +606,12 @@ export default function App() {
               exit={{ opacity: 0, y: -10 }}
               className="space-y-8"
             >
-              <div className="text-center max-w-2xl mx-auto mb-16 flex flex-col items-center">
+              <div className="text-center max-w-2xl mx-auto mb-8 md:mb-16 flex flex-col items-center px-4">
                 <motion.span 
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 }}
-                  className="font-accent italic text-2xl md:text-3xl text-[#8C734B] mb-1"
+                  className="font-accent italic text-xl md:text-3xl text-[#8C734B] mb-1"
                 >
                   Com carinho
                 </motion.span>
@@ -618,7 +619,7 @@ export default function App() {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.2 }}
-                  className="text-4xl md:text-5xl font-serif font-medium text-[#8C734B] mb-6 tracking-tight leading-none"
+                  className="text-3xl md:text-5xl font-serif font-medium text-[#8C734B] mb-4 md:mb-6 tracking-tight leading-none"
                 >
                   Lista de Presentes
                 </motion.h2>
@@ -626,14 +627,14 @@ export default function App() {
                   initial={{ opacity: 0, width: 0 }}
                   animate={{ opacity: 1, width: "100%" }}
                   transition={{ delay: 0.3, duration: 0.8 }}
-                  className="flex items-center gap-4 w-full max-w-[280px] md:max-w-[320px]"
+                  className="flex items-center gap-4 w-full max-w-[240px] md:max-w-[320px]"
                 >
                   <div className="h-[1px] flex-1 bg-[#B89B6D]/30" />
-                  <span className="text-[10px] font-sans tracking-[0.4em] uppercase text-[#B89B6D] font-semibold whitespace-nowrap">Escolha o seu</span>
+                  <span className="text-[9px] md:text-[10px] font-sans tracking-[0.3em] md:tracking-[0.4em] uppercase text-[#B89B6D] font-semibold whitespace-nowrap">Escolha o seu</span>
                   <div className="h-[1px] flex-1 bg-[#B89B6D]/30" />
                 </motion.div>
 
-                <div className="mt-12 bg-[#FAF8F5] p-3 rounded-lg border border-[#D4AF37]/10 flex flex-col items-center justify-center gap-3 max-w-md mx-auto">
+                <div className="mt-8 md:mt-12 bg-[#FAF8F5] p-3 rounded-lg border border-[#D4AF37]/10 flex flex-col items-center justify-center gap-2 md:gap-3 max-w-md mx-auto">
                   <div className="flex items-center gap-3">
                     <div className="w-4 h-4 flex items-center justify-center rounded-full bg-[#D4AF37]/60 text-white text-[8px] font-bold shrink-0">!</div>
                     <p className="text-[10px] italic text-[#4A4238]/70">
@@ -664,20 +665,20 @@ export default function App() {
 
                     <div className="mb-4">
                       <h3 className={cn(
-                        "text-lg font-serif text-[#8C734B] mb-1",
+                        "text-base md:text-lg font-serif text-[#8C734B] mb-1",
                         gift.status === 'reserved' && "line-through text-[#A69372]"
                       )}>
                         {gift.name}
                       </h3>
-                      <p className="text-xs text-[#A69372] mb-4 h-10 leading-snug line-clamp-2">{gift.description}</p>
+                      <p className="text-[11px] md:text-xs text-[#A69372] mb-4 h-10 leading-snug line-clamp-2">{gift.description}</p>
                       <div className="flex items-center justify-between mt-6">
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#A69372]">
+                        <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-[#A69372]">
                           {gift.priceRange}
                         </span>
                         {gift.status !== 'reserved' && (
                           <button
                             onClick={() => setSelectedGift(gift)}
-                            className="text-xs bg-[#FAF8F5] border border-[#D4AF37]/40 px-4 py-2 rounded-full hover:bg-[#D4AF37] hover:text-white transition-all font-medium"
+                            className="text-[10px] md:text-xs bg-[#FAF8F5] border border-[#D4AF37]/40 px-3 md:px-4 py-1.5 md:py-2 rounded-full hover:bg-[#D4AF37] hover:text-white transition-all font-medium"
                           >
                             Escolher
                           </button>
@@ -697,8 +698,8 @@ export default function App() {
               className="max-w-2xl mx-auto space-y-12"
             >
               <div className="text-center relative">
-                <h2 className="text-3xl font-serif text-[#8C734B] mb-4">Mensagens de Carinho</h2>
-                <p className="text-[#A69372]">Suas palavras são o nosso maior presente!</p>
+                <h2 className="text-2xl md:text-3xl font-serif text-[#8C734B] mb-2 md:mb-4">Mensagens de Carinho</h2>
+                <p className="text-[#A69372] text-[10px] md:text-sm px-6">Suas palavras são o nosso maior presente!</p>
                 {isMadrinhaMode && messages.length > 0 && (
                   <button 
                     onClick={handleClearMessages}
@@ -709,7 +710,7 @@ export default function App() {
                 )}
               </div>
 
-              <form onSubmit={handlePostMessage} className="bg-white p-8 rounded-2xl border border-[#E8E2D8] shadow-sm max-w-xl mx-auto w-full">
+              <form onSubmit={handlePostMessage} className="bg-white p-6 md:p-8 rounded-2xl border border-[#E8E2D8] shadow-sm max-w-xl mx-auto w-full">
                 <div className="space-y-4">
                   <div>
                     <label className="block text-[10px] font-bold uppercase tracking-widest text-[#A69372] mb-2">Seu Nome</label>
