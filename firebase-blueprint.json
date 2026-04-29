@@ -1,0 +1,56 @@
+{
+  "entities": {
+    "Gift": {
+      "title": "Gift",
+      "description": "A wedding gift item",
+      "type": "object",
+      "properties": {
+        "number": { "type": "number", "description": "Raffle-style number" },
+        "name": { "type": "string", "description": "Name of the gift" },
+        "description": { "type": "string", "description": "Description of the gift" },
+        "priceRange": { "type": "string", "description": "Estimated price range" },
+        "status": { "type": "string", "enum": ["available", "reserved"] },
+        "reservedBy": { "type": "string", "description": "Name of the guest who reserved it" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["number", "name", "description", "priceRange", "status"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "A message from a guest to the couple",
+      "type": "object",
+      "properties": {
+        "senderName": { "type": "string" },
+        "content": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["senderName", "content", "createdAt"]
+    },
+    "RSVP": {
+      "title": "RSVP",
+      "description": "Guest confirmation of presence",
+      "type": "object",
+      "properties": {
+        "names": { "type": "array", "items": { "type": "string" } },
+        "confirmed": { "type": "boolean" },
+        "count": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["names", "confirmed", "count", "createdAt"]
+    }
+  },
+  "firestore": {
+    "gifts/{giftId}": {
+      "schema": "Gift",
+      "description": "Collection of wedding gifts"
+    },
+    "messages/{messageId}": {
+      "schema": "Message",
+      "description": "Collection of messages from guests"
+    },
+    "rsvp/{rsvpId}": {
+      "schema": "RSVP",
+      "description": "Collection of RSVPs"
+    }
+  }
+}
