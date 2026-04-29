@@ -102,6 +102,20 @@ const INITIAL_GIFTS = [
 ];
 
 export default function App() {
+  if (!db || !auth) {
+    return (
+      <div className="min-h-screen bg-[#FDFCF8] flex items-center justify-center p-6 text-center">
+        <div className="bg-white p-10 rounded-3xl border border-[#E8E2D8] shadow-xl max-w-lg">
+          <ShieldCheck className="w-12 h-12 text-[#D4AF37] mx-auto mb-6 opacity-30" />
+          <h1 className="text-2xl font-serif text-[#8C734B] mb-4">Configuração Pendente</h1>
+          <p className="text-[#4A4238] mb-8 leading-relaxed">
+            As credenciais do Firebase não foram detectadas. Se você estiver na Vercel, certifique-se de adicionar as <b>Environment Variables</b> no seu projeto (VITE_FIREBASE_API_KEY, etc).
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   const [activeTab, setActiveTab] = useState<'rsvp' | 'gifts' | 'messages'>('rsvp');
   const [showWelcome, setShowWelcome] = useState(true);
   const [gifts, setGifts] = useState<GiftItem[]>([]);

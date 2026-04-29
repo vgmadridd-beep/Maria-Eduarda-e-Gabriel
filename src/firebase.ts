@@ -2,23 +2,27 @@ import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
+// @ts-ignore - __FIREBASE_CONFIG__ is injected by Vite define
+const injectedConfig = typeof __FIREBASE_CONFIG__ !== 'undefined' ? __FIREBASE_CONFIG__ : {};
+
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
-  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || injectedConfig.apiKey,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || injectedConfig.authDomain,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || injectedConfig.projectId,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || injectedConfig.storageBucket,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || injectedConfig.messagingSenderId,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || injectedConfig.appId,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || injectedConfig.measurementId
 };
 
-const databaseId = import.meta.env.VITE_FIREBASE_DATABASE_ID;
+const databaseId = import.meta.env.VITE_FIREBASE_DATABASE_ID || injectedConfig.firestoreDatabaseId;
 
-// ValidaÃ§Ã£o bÃ¡sica para evitar tela branca sem erros claros
-if (!firebaseConfig.apiKey && typeof window !== 'undefined') {
-  console.warn("Firebase configuration is missing. If you are on Vercel, make sure to add Environment Variables starting with VITE_FIREBASE_.");
+let app;
+try {
+  app = initializeApp(firebaseConfig);
+} catch (e) {
+  console.error('Firebase initialization failed:', e);
 }
 
-const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app, databaseId || '(default)');
-export const auth = getAuth();
+export const db = app ? getFirestore(app, databaseId || '(default)') : null;
+export const auth = app ? getAuth(app) : null;
