@@ -22,8 +22,6 @@ import {
   Lock, 
   CheckCircle2, 
   ChevronRight, 
-  Heart, 
-  Calendar,
   X,
   ShieldCheck,
   Send,
@@ -87,6 +85,16 @@ interface GuestMessage {
   createdAt: any;
 }
 
+// --- Icons ---
+const TulipIcon = ({ className }: { className?: string }) => (
+  <img 
+    src="https://images.unsplash.com/photo-1520330960252-878536127bc4?auto=format&fit=crop&q=80&w=600" 
+    alt="Tulipas" 
+    className={`${className} object-contain`}
+    referrerPolicy="no-referrer"
+  />
+);
+
 // --- Initial Data ---
 const INITIAL_GIFTS = [
   { number: 1, name: "Jogo de Jantar 42 Peças", description: "Porcelana branca sofisticada", priceRange: "R$ 400 - R$ 600", status: "available" },
@@ -106,8 +114,8 @@ export default function App() {
     return (
       <div className="min-h-screen bg-[#FDFCF8] flex items-center justify-center p-6 text-center">
         <div className="bg-white p-10 rounded-3xl border border-[#E8E2D8] shadow-xl max-w-lg">
-          <ShieldCheck className="w-12 h-12 text-[#D4AF37] mx-auto mb-6 opacity-30" />
-          <h1 className="text-2xl font-serif text-[#8C734B] mb-4">Configuração Pendente</h1>
+          <ShieldCheck className="w-12 h-12 text-[#5C6041] mx-auto mb-6 opacity-30" />
+          <h1 className="text-2xl font-serif text-[#5C6041] mb-4">Configuração Pendente</h1>
           <p className="text-[#4A4238] mb-8 leading-relaxed">
             As credenciais do Firebase não foram detectadas. Se você estiver na Vercel, certifique-se de adicionar as <b>Environment Variables</b> no seu projeto (VITE_FIREBASE_API_KEY, etc).
           </p>
@@ -398,7 +406,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] selection:bg-[#EBDAB2]">
+    <div className="min-h-screen bg-[#FAF8F5] selection:bg-[#5C6041]/30">
       <Toaster position="bottom-center" />
       
       {/* Welcome Screen Overlay */}
@@ -416,33 +424,31 @@ export default function App() {
               transition={{ delay: 0.3 }}
               className="max-w-3xl mx-auto py-8 space-y-8 text-center flex flex-col items-center"
             >
-              <div className="flex justify-center">
-                <div className="p-6 border border-[#D4AF37]/30 rounded-full">
-                  <Heart className="w-10 h-10 text-[#D4AF37] fill-[#D4AF37]/5" />
+                <div className="flex justify-center mb-4">
+                  <TulipIcon className="h-32 md:h-40 w-auto" />
                 </div>
-              </div>
               
               <div className="text-[#4A4238] leading-relaxed font-serif italic text-base md:text-lg space-y-6 w-full flex flex-col items-center">
-                <p className="font-[Georgia] text-xl md:text-3xl text-[#8C734B] not-italic leading-tight text-center max-w-4xl font-normal px-4">
+                <p className="font-[Georgia] text-xl md:text-3xl text-[#5C6041] not-italic leading-tight text-center max-w-4xl font-normal px-4">
                   Sejam bem-vindos à <span className="font-normal block sm:inline">Confirmação de Presença e Lista de Presentes</span>
                 </p>
                 <div className="space-y-4 text-base md:text-lg w-full flex flex-col items-center px-4">
-                  <p className="text-[#8c734b] max-w-[700px] mx-auto text-center">
+                  <p className="text-[#5C6041] max-w-[700px] mx-auto text-center">
                     É uma alegria ter você aqui! <br className="hidden sm:block"/>
                     Este site foi criado para a melhor organização do grande dia de Maria Eduarda e Gabriel e para que cada convidado possa oferecer um presente único e especial para os noivos.
                   </p>
                   
-                  <div className="bg-[#FAF8F5] p-6 rounded-xl border border-[#D4AF37]/10 space-y-3 max-w-[700px] mx-auto text-center shadow-sm">
-                    <p className="font-medium text-[#8C734B] not-italic uppercase tracking-widest text-[10px]">
+                  <div className="bg-[#FAF8F5] p-6 rounded-xl border border-[#5C6041]/10 space-y-3 max-w-[700px] mx-auto text-center shadow-sm">
+                    <p className="font-medium text-[#5C6041] not-italic uppercase tracking-widest text-[10px]">
                       Passo a Passo:
                     </p>
-                    <p className="text-sm md:text-base text-[#8c734b] not-italic leading-relaxed max-w-[600px] mx-auto">
+                    <p className="text-sm md:text-base text-[#5C6041] not-italic leading-relaxed max-w-[600px] mx-auto">
                       1. Primeiro, <span className="font-bold">confirme sua presença</span> na aba correspondente.<br/>
-                      2. Depois, escolha um presente na lista. <span className="font-bold text-[#8C734B]">Por favor, selecione o presente aqui no site antes de comprar</span> — assim evitamos presentes repetidos.<br/>
+                      2. Depois, escolha um presente na lista. <span className="font-bold text-[#5C6041]">Por favor, selecione o presente aqui no site antes de comprar</span> — assim evitamos presentes repetidos.<br/>
                       3. Ao final, sinta-se à vontade para deixar um recado.
                     </p>
                   </div>
-                  <p className="text-[10px] md:text-sm text-[#A69372] italic max-w-[551px] mx-auto text-center opacity-80">
+                  <p className="text-[10px] md:text-sm text-[#93a481] italic max-w-[551px] mx-auto text-center opacity-80">
                     * Caso você tenha pensado em algo especial que não esteja na lista, não tem problema! Sinta-se à vontade para presentear como seu coração desejar.
                   </p>
                 </div>
@@ -455,7 +461,7 @@ export default function App() {
                   setShowWelcome(false);
                   setActiveTab('rsvp');
                 }}
-                className="mt-4 mb-4 px-8 md:px-12 py-3 md:py-4 bg-[#8C734B] text-white rounded-full font-medium tracking-widest uppercase text-[10px] md:text-xs shadow-xl shadow-[#8C734B]/20 hover:bg-[#765F3A] transition-all"
+                className="mt-4 mb-4 px-8 md:px-12 py-3 md:py-4 bg-[#5C6041] text-white rounded-full font-medium tracking-widest uppercase text-[10px] md:text-xs shadow-xl shadow-[#5C6041]/20 hover:opacity-90 transition-all"
               >
                 Prosseguir para Confirmação
               </motion.button>
@@ -477,20 +483,20 @@ export default function App() {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="z-10 p-6 md:p-8"
+          className="z-10 p-6 md:p-8 flex flex-col items-center"
         >
-          <div className="mb-4 md:mb-6 inline-block p-3 md:p-4 border border-[#D4AF37] rounded-full">
-            <Heart className="w-6 h-6 md:w-8 md:h-8 text-[#D4AF37] fill-[#D4AF37]/10" />
+          <div className="mb-6">
+            <TulipIcon className="h-20 md:h-28 w-auto" />
           </div>
-          <h1 className="text-3xl sm:text-5xl md:text-8xl font-accent italic text-[#8C734B] mb-4 md:mb-6 tracking-tight leading-tight md:leading-none px-4">
+          <h1 className="text-3xl sm:text-5xl md:text-8xl font-accent italic text-[#5C6041] mb-4 md:mb-6 tracking-tight leading-tight md:leading-none px-4">
             Maria Eduarda & Gabriel
           </h1>
-          <div className="flex flex-wrap items-center justify-center gap-2 md:gap-4 text-[#D4AF37] uppercase tracking-[0.15em] md:tracking-[0.3em] font-light text-[10px] md:text-base px-4">
-            <div className="hidden sm:block h-px w-4 md:w-8 bg-[#D4AF37]/30" />
+          <div className="flex flex-wrap items-center justify-center gap-2 md:gap-4 text-[#5C6041] uppercase tracking-[0.15em] md:tracking-[0.3em] font-light text-[10px] md:text-base px-4">
+            <div className="hidden sm:block h-px w-4 md:w-8 bg-[#5C6041]/30" />
             <span>1 de Agosto de 2026</span>
-            <div className="hidden sm:block h-px w-4 md:w-8 bg-[#D4AF37]/30" />
+            <div className="hidden sm:block h-px w-4 md:w-8 bg-[#5C6041]/30" />
           </div>
-          <p className="mt-6 md:mt-8 font-serif italic text-sm md:text-lg text-[#A69372] max-w-2xl mx-auto px-6 leading-relaxed">
+          <p className="mt-6 md:mt-8 font-serif italic text-sm md:text-lg text-[#93a481] max-w-2xl mx-auto px-6 leading-relaxed">
             "²⁴ Por essa razão, o homem deixará pai e mãe e se unirá à sua mulher, e eles se tornarão uma só carne."
             <span className="block mt-2 text-[9px] md:text-xs uppercase tracking-widest font-sans not-italic font-bold">Gênesis 2:24</span>
           </p>
@@ -505,7 +511,7 @@ export default function App() {
               onClick={() => setActiveTab('rsvp')}
               className={cn(
                 "flex items-center gap-2 px-4 md:px-8 py-3 md:py-4 text-[10px] md:text-sm font-medium tracking-wide transition-all border-b-2 whitespace-nowrap",
-                activeTab === 'rsvp' ? "border-[#D4AF37] text-[#8C734B]" : "border-transparent text-[#A69372] hover:text-[#8C734B]"
+                activeTab === 'rsvp' ? "border-[#5C6041] text-[#5C6041]" : "border-transparent text-[#93a481] hover:text-[#5C6041]"
               )}
             >
               <CheckCircle2 className="w-3.5 h-3.5 md:w-4 md:h-4" />
@@ -515,7 +521,7 @@ export default function App() {
               onClick={() => setActiveTab('gifts')}
               className={cn(
                 "flex items-center gap-2 px-4 md:px-8 py-3 md:py-4 text-[10px] md:text-sm font-medium tracking-wide transition-all border-b-2 whitespace-nowrap",
-                activeTab === 'gifts' ? "border-[#D4AF37] text-[#8C734B]" : "border-transparent text-[#A69372] hover:text-[#8C734B]"
+                activeTab === 'gifts' ? "border-[#5C6041] text-[#5C6041]" : "border-transparent text-[#93a481] hover:text-[#5C6041]"
               )}
             >
               <Gift className="w-3.5 h-3.5 md:w-4 md:h-4" />
@@ -525,7 +531,7 @@ export default function App() {
               onClick={() => setActiveTab('messages')}
               className={cn(
                 "flex items-center gap-2 px-4 md:px-8 py-3 md:py-4 text-[10px] md:text-sm font-medium tracking-wide transition-all border-b-2 whitespace-nowrap",
-                activeTab === 'messages' ? "border-[#D4AF37] text-[#8C734B]" : "border-transparent text-[#A69372] hover:text-[#8C734B]"
+                activeTab === 'messages' ? "border-[#5C6041] text-[#5C6041]" : "border-transparent text-[#93a481] hover:text-[#5C6041]"
               )}
             >
               <MessageSquare className="w-3.5 h-3.5 md:w-4 md:h-4" />
@@ -546,14 +552,14 @@ export default function App() {
               className="max-w-xl mx-auto space-y-8 md:space-y-12"
             >
               <div className="text-center relative">
-                <h2 className="text-2xl md:text-3xl font-serif text-[#8C734B] mb-2 md:mb-4 px-4">Confirmação de Presença</h2>
-                <p className="text-[#A69372] text-[10px] md:text-sm px-6">Sua presença é essencial para completar nossa felicidade!</p>
+                <h2 className="text-2xl md:text-3xl font-serif text-[#5C6041] mb-2 md:mb-4 px-4">Confirmação de Presença</h2>
+                <p className="text-[#93a481] text-[10px] md:text-sm px-6">Sua presença é essencial para completar nossa felicidade!</p>
               </div>
 
               <form onSubmit={handleRsvp} className="bg-white p-6 md:p-8 rounded-2xl border border-[#E8E2D8] shadow-sm space-y-6">
                 <div className="space-y-4">
                   <div className="space-y-3">
-                    <label className="block text-[10px] font-bold uppercase tracking-widest text-[#A69372] mb-2">Nomes Completos dos Convidados</label>
+                    <label className="block text-[10px] font-bold uppercase tracking-widest text-[#93a481] mb-2">Nomes Completos dos Convidados</label>
                     {rsvpData.names.map((name, index) => (
                       <div key={index} className="flex gap-2">
                         <input 
@@ -561,13 +567,13 @@ export default function App() {
                           onChange={e => updateGuestName(index, e.target.value)}
                           required
                           placeholder={index === 0 ? "Seu nome completo" : "Nome completo do acompanhante"}
-                          className="flex-1 bg-[#FAF8F5] border border-[#D4AF37]/20 px-4 py-3 rounded-md focus:outline-none focus:ring-1 focus:ring-[#D4AF37] text-sm"
+                          className="flex-1 bg-[#FAF8F5] border border-[#5C6041]/20 px-4 py-3 rounded-md focus:outline-none focus:ring-1 focus:ring-[#5C6041] text-sm"
                         />
                         {rsvpData.names.length > 1 && (
                           <button 
                             type="button"
                             onClick={() => removeGuestName(index)}
-                            className="p-3 text-[#A69372] hover:text-red-400 transition-colors"
+                            className="p-3 text-[#93a481] hover:text-red-400 transition-colors"
                           >
                             <X className="w-4 h-4" />
                           </button>
@@ -578,9 +584,9 @@ export default function App() {
                     <button 
                       type="button"
                       onClick={addGuestName}
-                      className="text-[10px] uppercase tracking-widest text-[#D4AF37] font-bold flex items-center gap-2 mt-2 hover:opacity-70 transition-opacity"
+                      className="text-[10px] uppercase tracking-widest text-[#5C6041] font-bold flex items-center gap-2 mt-2 hover:opacity-70 transition-opacity"
                     >
-                      <span className="w-5 h-5 flex items-center justify-center rounded-full border border-[#D4AF37] text-xs">+</span>
+                      <span className="w-5 h-5 flex items-center justify-center rounded-full border border-[#5C6041] text-xs">+</span>
                       Adicionar outra pessoa
                     </button>
                   </div>
@@ -588,12 +594,12 @@ export default function App() {
 
                 <button 
                   disabled={isSubmitting}
-                  className="w-full bg-[#D4AF37] text-white py-4 rounded-md text-sm font-bold uppercase tracking-[0.2em] hover:bg-[#B89B6D] transition-all shadow-lg shadow-[#D4AF37]/20 disabled:opacity-50"
+                  className="w-full bg-[#5C6041] text-white py-4 rounded-md text-sm font-bold uppercase tracking-[0.2em] hover:opacity-90 transition-all shadow-lg shadow-[#5C6041]/20 disabled:opacity-50"
                 >
                   {isSubmitting ? "Enviando..." : "Enviar Confirmação"}
                 </button>
                 
-                <p className="text-[10px] text-center text-[#A69372] italic">
+                <p className="text-[10px] text-center text-[#93a481] italic">
                   * Por favor, confirme até dia 1 de julho de 2026.
                 </p>
               </form>
@@ -611,7 +617,7 @@ export default function App() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 }}
-                  className="font-accent italic text-xl md:text-3xl text-[#8C734B] mb-1"
+                  className="font-accent italic text-xl md:text-3xl text-[#5C6041] mb-1"
                 >
                   Com carinho
                 </motion.span>
@@ -619,7 +625,7 @@ export default function App() {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.2 }}
-                  className="text-3xl md:text-5xl font-serif font-medium text-[#8C734B] mb-4 md:mb-6 tracking-tight leading-none"
+                  className="text-3xl md:text-5xl font-serif font-medium text-[#5C6041] mb-4 md:mb-6 tracking-tight leading-none"
                 >
                   Lista de Presentes
                 </motion.h2>
@@ -629,14 +635,14 @@ export default function App() {
                   transition={{ delay: 0.3, duration: 0.8 }}
                   className="flex items-center gap-4 w-full max-w-[240px] md:max-w-[320px]"
                 >
-                  <div className="h-[1px] flex-1 bg-[#B89B6D]/30" />
-                  <span className="text-[9px] md:text-[10px] font-sans tracking-[0.3em] md:tracking-[0.4em] uppercase text-[#B89B6D] font-semibold whitespace-nowrap">Escolha o seu</span>
-                  <div className="h-[1px] flex-1 bg-[#B89B6D]/30" />
+                  <div className="h-[1px] flex-1 bg-[#5C6041]/30" />
+                  <span className="text-[9px] md:text-[10px] font-sans tracking-[0.3em] md:tracking-[0.4em] uppercase text-[#5C6041] font-semibold whitespace-nowrap">Escolha o seu</span>
+                  <div className="h-[1px] flex-1 bg-[#5C6041]/30" />
                 </motion.div>
 
-                <div className="mt-8 md:mt-12 bg-[#FAF8F5] p-3 rounded-lg border border-[#D4AF37]/10 flex flex-col items-center justify-center gap-2 md:gap-3 max-w-md mx-auto">
+                <div className="mt-8 md:mt-12 bg-[#FAF8F5] p-3 rounded-lg border border-[#5C6041]/10 flex flex-col items-center justify-center gap-2 md:gap-3 max-w-md mx-auto">
                   <div className="flex items-center gap-3">
-                    <div className="w-4 h-4 flex items-center justify-center rounded-full bg-[#D4AF37]/60 text-white text-[8px] font-bold shrink-0">!</div>
+                    <div className="w-4 h-4 flex items-center justify-center rounded-full bg-[#5C6041]/60 text-white text-[8px] font-bold shrink-0">!</div>
                     <p className="text-[10px] italic text-[#4A4238]/70">
                       Apenas a madrinha terá acesso aos nomes de quem reservou cada presente.
                     </p>
@@ -655,30 +661,30 @@ export default function App() {
                     )}
                   >
                     <div className="absolute top-0 right-0 p-4">
-                      <span className="font-serif text-4xl text-[#D4AF37]/10 font-bold">#{gift.number}</span>
+                      <span className="font-serif text-4xl text-[#5C6041]/10 font-bold">#{gift.number}</span>
                     </div>
                     {gift.status === 'reserved' && (
-                      <div className="absolute top-3 right-3 bg-[#D4AF37] text-white text-[10px] px-2 py-0.5 rounded-full z-10 font-bold uppercase tracking-widest">
+                      <div className="absolute top-3 right-3 bg-[#5C6041] text-white text-[10px] px-2 py-0.5 rounded-full z-10 font-bold uppercase tracking-widest">
                         RESERVADO
                       </div>
                     )}
 
                     <div className="mb-4">
                       <h3 className={cn(
-                        "text-base md:text-lg font-serif text-[#8C734B] mb-1",
-                        gift.status === 'reserved' && "line-through text-[#A69372]"
+                        "text-base md:text-lg font-serif text-[#5C6041] mb-1",
+                        gift.status === 'reserved' && "line-through text-[#93a481]"
                       )}>
                         {gift.name}
                       </h3>
-                      <p className="text-[11px] md:text-xs text-[#A69372] mb-4 h-10 leading-snug line-clamp-2">{gift.description}</p>
+                      <p className="text-[11px] md:text-xs text-[#93a481] mb-4 h-10 leading-snug line-clamp-2">{gift.description}</p>
                       <div className="flex items-center justify-between mt-6">
-                        <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-[#A69372]">
+                        <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-[#93a481]">
                           {gift.priceRange}
                         </span>
                         {gift.status !== 'reserved' && (
                           <button
                             onClick={() => setSelectedGift(gift)}
-                            className="text-[10px] md:text-xs bg-[#FAF8F5] border border-[#D4AF37]/40 px-3 md:px-4 py-1.5 md:py-2 rounded-full hover:bg-[#D4AF37] hover:text-white transition-all font-medium"
+                            className="text-[10px] md:text-xs bg-[#FAF8F5] border border-[#5C6041]/40 px-3 md:px-4 py-1.5 md:py-2 rounded-full hover:bg-[#5C6041] hover:text-white transition-all font-medium"
                           >
                             Escolher
                           </button>
@@ -698,8 +704,8 @@ export default function App() {
               className="max-w-2xl mx-auto space-y-12"
             >
               <div className="text-center relative">
-                <h2 className="text-2xl md:text-3xl font-serif text-[#8C734B] mb-2 md:mb-4">Mensagens de Carinho</h2>
-                <p className="text-[#A69372] text-[10px] md:text-sm px-6">Suas palavras são o nosso maior presente!</p>
+                <h2 className="text-2xl md:text-3xl font-serif text-[#5C6041] mb-2 md:mb-4">Mensagens de Carinho</h2>
+                <p className="text-[#93a481] text-[10px] md:text-sm px-6">Suas palavras são o nosso maior presente!</p>
                 {isMadrinhaMode && messages.length > 0 && (
                   <button 
                     onClick={handleClearMessages}
@@ -713,27 +719,27 @@ export default function App() {
               <form onSubmit={handlePostMessage} className="bg-white p-6 md:p-8 rounded-2xl border border-[#E8E2D8] shadow-sm max-w-xl mx-auto w-full">
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-widest text-[#A69372] mb-2">Seu Nome</label>
+                    <label className="block text-[10px] font-bold uppercase tracking-widest text-[#93a481] mb-2">Seu Nome</label>
                     <input 
                       name="senderName"
                       required
                       placeholder="Ex: João e Maria"
-                      className="w-full bg-[#FAF8F5] border border-[#D4AF37]/20 px-4 py-2 rounded-md focus:outline-none focus:ring-1 focus:ring-[#D4AF37] text-sm"
+                      className="w-full bg-[#FAF8F5] border border-[#5C6041]/20 px-4 py-2 rounded-md focus:outline-none focus:ring-1 focus:ring-[#5C6041] text-sm"
                     />
                   </div>
                   <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-widest text-[#A69372] mb-2">Sua Mensagem</label>
+                    <label className="block text-[10px] font-bold uppercase tracking-widest text-[#93a481] mb-2">Sua Mensagem</label>
                     <textarea 
                       name="content"
                       required
                       placeholder="Escreva algo especial..."
                       rows={4}
-                      className="w-full bg-[#FAF8F5] border border-[#D4AF37]/20 px-4 py-2 rounded-md focus:outline-none focus:ring-1 focus:ring-[#D4AF37] text-sm resize-none"
+                      className="w-full bg-[#FAF8F5] border border-[#5C6041]/20 px-4 py-2 rounded-md focus:outline-none focus:ring-1 focus:ring-[#5C6041] text-sm resize-none"
                     />
                   </div>
                   <button 
                     disabled={isSubmitting}
-                    className="w-full bg-[#8C734B] text-white py-3 rounded-md flex items-center justify-center gap-2 text-sm font-medium hover:bg-[#765F3A] transition-all shadow-md disabled:opacity-50"
+                    className="w-full bg-[#5C6041] text-white py-3 rounded-md flex items-center justify-center gap-2 text-sm font-medium hover:opacity-90 transition-all shadow-md disabled:opacity-50"
                   >
                     {isSubmitting ? "Enviando..." : "Enviar Mensagem"}
                   </button>
@@ -741,20 +747,20 @@ export default function App() {
               </form>
 
               <div className="space-y-4 max-w-xl mx-auto w-full">
-                <h3 className="font-serif text-xl text-[#8C734B] border-b border-[#E8E2D8] pb-4">Mural dos Noivos</h3>
+                <h3 className="font-serif text-xl text-[#5C6041] border-b border-[#E8E2D8] pb-4">Mural dos Noivos</h3>
                 {messages.length === 0 ? (
-                  <p className="text-center text-xs text-[#A69372] italic py-8">Ainda não há mensagens. Seja o primeiro!</p>
+                  <p className="text-center text-xs text-[#93a481] italic py-8">Ainda não há mensagens. Seja o primeiro!</p>
                 ) : (
                   messages.map((msg) => (
                     <motion.div 
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       key={msg.id} 
-                      className="bg-white border-l-4 border-[#D4AF37] p-5 rounded-r-lg shadow-sm relative group"
+                      className="bg-white border-l-4 border-[#5C6041] p-5 rounded-r-lg shadow-sm relative group"
                     >
                       <div className="flex justify-between items-start">
                         <div>
-                          <p className="text-[#8C734B] text-xs font-bold mb-1">{msg.senderName}</p>
+                          <p className="text-[#5C6041] text-xs font-bold mb-1">{msg.senderName}</p>
                           <p className="text-sm text-[#4A4238] italic">"{msg.content}"</p>
                         </div>
                         {isMadrinhaMode && (
@@ -784,20 +790,20 @@ export default function App() {
           viewport={{ once: true }}
           className="space-y-6"
         >
-          <p className="font-accent italic text-4xl md:text-5xl text-[#8C734B] leading-none">
+          <p className="font-accent italic text-4xl md:text-5xl text-[#5C6041] leading-none">
             Maria Eduarda & Gabriel
           </p>
           <div className="flex flex-col items-center">
             <div className="flex flex-wrap justify-center gap-8 mb-12">
               <button 
                 onClick={() => isNoivaMode ? setIsNoivaMode(true) : setShowNoivaModal(true)}
-                className="text-[9px] uppercase tracking-[0.3em] text-[#A69372]/40 hover:text-[#8C734B] transition-all cursor-pointer"
+                className="text-[9px] uppercase tracking-[0.3em] text-[#93a481]/40 hover:text-[#5C6041] transition-all cursor-pointer"
               >
                 Painel Noiva
               </button>
               <button 
                 onClick={() => isMadrinhaMode ? setIsMadrinhaMode(true) : setShowMadrinhaModal(true)}
-                className="text-[9px] uppercase tracking-[0.3em] text-[#A69372]/40 hover:text-[#8C734B] transition-all cursor-pointer"
+                className="text-[9px] uppercase tracking-[0.3em] text-[#93a481]/40 hover:text-[#5C6041] transition-all cursor-pointer"
               >
                 Painel Madrinha
               </button>
@@ -821,24 +827,24 @@ export default function App() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSelectedGift(null)}
-              className="absolute inset-0 bg-[#5C4D32]/60 backdrop-blur-sm"
+              className="absolute inset-0 bg-[#5C6041]/60 backdrop-blur-sm"
             />
             <motion.div 
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white w-full max-w-sm rounded-2xl p-8 relative z-10 shadow-2xl border border-[#D4AF37]"
+              className="bg-white w-full max-w-sm rounded-2xl p-8 relative z-10 shadow-2xl border border-[#5C6041]"
             >
               <button 
                 onClick={() => setSelectedGift(null)}
-                className="absolute top-4 right-4 p-2 text-[#A69372] hover:text-[#8C734B]"
+                className="absolute top-4 right-4 p-2 text-[#93a481] hover:text-[#5C6041]"
               >
                 <X className="w-5 h-5" />
               </button>
               
               <div className="text-center mb-6">
-                <h3 className="text-xl font-serif text-[#8C734B]">Reservar Presente</h3>
-                <p className="text-sm text-[#A69372] mt-1 line-clamp-1">{selectedGift.name}</p>
+                <h3 className="text-xl font-serif text-[#5C6041]">Reservar Presente</h3>
+                <p className="text-sm text-[#93a481] mt-1 line-clamp-1">{selectedGift.name}</p>
               </div>
 
               <div className="space-y-4">
@@ -846,7 +852,7 @@ export default function App() {
                   value={reservationName}
                   onChange={(e) => setReservationName(e.target.value)}
                   placeholder="Seu Nome Completo"
-                  className="w-full bg-[#FAF8F5] border border-[#D4AF37]/30 px-4 py-3 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#D4AF37] text-sm"
+                  className="w-full bg-[#FAF8F5] border border-[#5C6041]/30 px-4 py-3 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#5C6041] text-sm"
                 />
                 
                 <div className="flex gap-3">
@@ -859,7 +865,7 @@ export default function App() {
                   <button 
                     disabled={!reservationName.trim() || isSubmitting}
                     onClick={handleReserve}
-                    className="flex-1 py-3 text-xs bg-[#D4AF37] text-white rounded-lg font-bold shadow-md hover:bg-[#B8962D] disabled:opacity-50"
+                    className="flex-1 py-3 text-xs bg-[#5C6041] text-white rounded-lg font-bold shadow-md hover:opacity-90 disabled:opacity-50"
                   >
                     {isSubmitting ? "..." : "Confirmar"}
                   </button>
@@ -879,25 +885,25 @@ export default function App() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setShowMadrinhaModal(false)}
-              className="absolute inset-0 bg-[#5C4D32]/60 backdrop-blur-sm"
+              className="absolute inset-0 bg-[#5C6041]/60 backdrop-blur-sm"
             />
             <motion.div 
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white w-full max-w-sm rounded-2xl p-8 relative z-10 shadow-2xl border border-[#D4AF37]"
+              className="bg-white w-full max-w-sm rounded-2xl p-8 relative z-10 shadow-2xl border border-[#5C6041]"
             >
               <button 
                 onClick={() => setShowMadrinhaModal(false)}
-                className="absolute top-4 right-4 p-2 text-[#A69372]"
+                className="absolute top-4 right-4 p-2 text-[#93a481]"
               >
                 <X className="w-5 h-5" />
               </button>
               
               <div className="text-center mb-6">
-                <ShieldCheck className="w-10 h-10 text-[#D4AF37] mx-auto mb-4" />
-                <h3 className="text-xl font-serif text-[#8C734B]">Acesso da Madrinha</h3>
-                <p className="text-xs text-[#A69372] mt-1">Senha exclusiva para controle de presentes.</p>
+                <ShieldCheck className="w-10 h-10 text-[#5C6041] mx-auto mb-4" />
+                <h3 className="text-xl font-serif text-[#5C6041]">Acesso da Madrinha</h3>
+                <p className="text-xs text-[#93a481] mt-1">Senha exclusiva para controle de presentes.</p>
               </div>
 
               <div className="space-y-4">
@@ -906,11 +912,11 @@ export default function App() {
                   value={madrinhaPassword}
                   onChange={(e) => setMadrinhaPassword(e.target.value)}
                   placeholder="Senha secreta"
-                  className="w-full bg-[#FAF8F5] border border-[#D4AF37]/30 px-4 py-2 rounded-md focus:outline-none focus:ring-1 focus:ring-[#D4AF37] text-center text-sm"
+                  className="w-full bg-[#FAF8F5] border border-[#5C6041]/30 px-4 py-2 rounded-md focus:outline-none focus:ring-1 focus:ring-[#5C6041] text-center text-sm"
                 />
                 <button 
                   onClick={checkMadrinhaPassword}
-                  className="w-full bg-[#8C734B] text-white py-2 rounded-md text-sm font-medium hover:bg-[#765F3A] transition-all"
+                  className="w-full bg-[#5C6041] text-white py-2 rounded-md text-sm font-medium hover:opacity-90 transition-all"
                 >
                   Entrar no Painel
                 </button>
@@ -929,25 +935,25 @@ export default function App() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setShowNoivaModal(false)}
-              className="absolute inset-0 bg-[#5C4D32]/60 backdrop-blur-sm"
+              className="absolute inset-0 bg-[#5C6041]/60 backdrop-blur-sm"
             />
             <motion.div 
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white w-full max-w-sm rounded-2xl p-8 relative z-10 shadow-2xl border border-[#D4AF37]"
+              className="bg-white w-full max-w-sm rounded-2xl p-8 relative z-10 shadow-2xl border border-[#5C6041]"
             >
               <button 
                 onClick={() => setShowNoivaModal(false)}
-                className="absolute top-4 right-4 p-2 text-[#A69372]"
+                className="absolute top-4 right-4 p-2 text-[#93a481]"
               >
                 <X className="w-5 h-5" />
               </button>
               
               <div className="text-center mb-6">
-                <Lock className="w-10 h-10 text-[#D4AF37] mx-auto mb-4" />
-                <h3 className="text-xl font-serif text-[#8C734B]">Acesso da Noiva</h3>
-                <p className="text-xs text-[#A69372] mt-1">Olá Maria Eduarda! Digite sua senha.</p>
+                <Lock className="w-10 h-10 text-[#5C6041] mx-auto mb-4" />
+                <h3 className="text-xl font-serif text-[#5C6041]">Acesso da Noiva</h3>
+                <p className="text-xs text-[#93a481] mt-1">Olá Maria Eduarda! Digite sua senha.</p>
               </div>
 
               <div className="space-y-4">
@@ -956,11 +962,11 @@ export default function App() {
                   value={noivaPassword}
                   onChange={(e) => setNoivaPassword(e.target.value)}
                   placeholder="Senha da noiva"
-                  className="w-full bg-[#FAF8F5] border border-[#D4AF37]/30 px-4 py-2 rounded-md focus:outline-none focus:ring-1 focus:ring-[#D4AF37] text-center text-sm"
+                  className="w-full bg-[#FAF8F5] border border-[#5C6041]/30 px-4 py-2 rounded-md focus:outline-none focus:ring-1 focus:ring-[#5C6041] text-center text-sm"
                 />
                 <button 
                   onClick={checkNoivaPassword}
-                  className="w-full bg-[#8C734B] text-white py-2 rounded-md text-sm font-medium hover:bg-[#765F3A] transition-all"
+                  className="w-full bg-[#5C6041] text-white py-2 rounded-md text-sm font-medium hover:opacity-90 transition-all"
                 >
                   Ver Lista de Confirmados
                 </button>
@@ -983,10 +989,10 @@ export default function App() {
           >
             <div className="max-w-5xl mx-auto p-6 md:py-12">
               <div className="flex items-center justify-between mb-8">
-                <h2 className="text-3xl font-serif text-[#8C734B]">Painel da Madrinha</h2>
+                <h2 className="text-3xl font-serif text-[#5C6041]">Painel da Madrinha</h2>
                 <button 
                   onClick={() => setIsMadrinhaMode(false)}
-                  className="px-6 py-2 bg-[#8C734B] text-white text-[10px] font-bold uppercase tracking-widest rounded-full"
+                  className="px-6 py-2 bg-[#5C6041] text-white text-[10px] font-bold uppercase tracking-widest rounded-full"
                 >
                   Sair do Painel
                 </button>
@@ -994,7 +1000,7 @@ export default function App() {
 
               <div className="space-y-12">
                 <section>
-                  <h3 className="text-xl font-serif text-[#8C734B] mb-4 border-b border-[#E8E2D8] pb-2">Gestão de Presentes</h3>
+                  <h3 className="text-xl font-serif text-[#5C6041] mb-4 border-b border-[#E8E2D8] pb-2">Gestão de Presentes</h3>
                   <div className="bg-white border border-[#E8E2D8] rounded-xl overflow-hidden shadow-sm overflow-x-auto">
                     <table className="w-full text-left text-sm min-w-[600px]">
                       <thead className="bg-[#F2EDE4] text-[#4A4238]">
@@ -1009,14 +1015,14 @@ export default function App() {
                       <tbody className="divide-y divide-[#E8E2D8]">
                         {gifts.map(gift => (
                           <tr key={gift.id} className="hover:bg-[#FAF8F5]">
-                            <td className="px-6 py-4 text-[#D4AF37] font-mono">#{gift.number}</td>
+                            <td className="px-6 py-4 text-[#5C6041] font-mono">#{gift.number}</td>
                             <td className="px-6 py-4 font-medium text-[#4A4238]">{gift.name}</td>
                             <td className="px-6 py-4">
                               <span className={cn(
                                 "flex items-center gap-1.5 font-bold uppercase text-[10px] tracking-widest",
-                                gift.status === 'reserved' ? "text-[#D4AF37]" : "text-emerald-600"
+                                gift.status === 'reserved' ? "text-[#5C6041]" : "text-emerald-600"
                               )}>
-                                <div className={cn("w-1.5 h-1.5 rounded-full", gift.status === 'reserved' ? "bg-[#D4AF37]" : "bg-emerald-600")} />
+                                <div className={cn("w-1.5 h-1.5 rounded-full", gift.status === 'reserved' ? "bg-[#5C6041]" : "bg-emerald-600")} />
                                 {gift.status === 'reserved' ? 'Reservado' : 'Disponível'}
                               </span>
                             </td>
@@ -1042,7 +1048,7 @@ export default function App() {
                 </section>
 
                 <section>
-                  <h3 className="text-xl font-serif text-[#8C734B] mb-4 border-b border-[#E8E2D8] pb-2">Lista de Convidados (RSVP)</h3>
+                  <h3 className="text-xl font-serif text-[#5C6041] mb-4 border-b border-[#E8E2D8] pb-2">Lista de Convidados (RSVP)</h3>
                   <div className="bg-white border border-[#E8E2D8] rounded-xl overflow-hidden shadow-sm overflow-x-auto">
                     <table className="w-full text-left text-sm min-w-[600px]">
                       <thead className="bg-[#F2EDE4] text-[#4A4238]">
@@ -1056,17 +1062,17 @@ export default function App() {
                       <tbody className="divide-y divide-[#E8E2D8]">
                         {flatRsvpList.map((rsvp, idx) => (
                           <tr key={rsvp.flatId} className="hover:bg-[#FAF8F5]">
-                            <td className="px-6 py-4 text-[#A69372] font-mono text-xs">{idx + 1}</td>
+                            <td className="px-6 py-4 text-[#93a481] font-mono text-xs">{idx + 1}</td>
                             <td className="px-6 py-4 font-medium text-[#4A4238] uppercase tracking-wide">
                               {rsvp.displayName}
                             </td>
-                            <td className="px-6 py-4 text-[#A69372]">
+                            <td className="px-6 py-4 text-[#93a481]">
                               {rsvp.isFirstInGroup ? (
-                                <span className="text-[10px] bg-[#FAF8F5] px-2 py-0.5 rounded border border-[#D4AF37]/20">
+                                <span className="text-[10px] bg-[#FAF8F5] px-2 py-0.5 rounded border border-[#5C6041]/20">
                                   GRUPO ({rsvp.groupSize})
                                 </span>
                               ) : (
-                                <span className="text-[10px] text-[#A69372]/50 italic">mesmo grupo</span>
+                                <span className="text-[10px] text-[#93a481]/50 italic">mesmo grupo</span>
                               )}
                             </td>
                             <td className="px-6 py-4 text-right">
@@ -1087,7 +1093,7 @@ export default function App() {
                 </section>
 
                 <section>
-                  <h3 className="text-xl font-serif text-[#8C734B] mb-4 border-b border-[#E8E2D8] pb-2">Gestão de Recados</h3>
+                  <h3 className="text-xl font-serif text-[#5C6041] mb-4 border-b border-[#E8E2D8] pb-2">Gestão de Recados</h3>
                   <div className="bg-white border border-[#E8E2D8] rounded-xl overflow-hidden shadow-sm">
                     <div className="p-4 bg-[#F2EDE4] flex justify-between items-center">
                       <span className="text-xs font-bold text-[#4A4238] uppercase tracking-widest">{messages.length} Recados no Mural</span>
@@ -1105,8 +1111,8 @@ export default function App() {
                         <div key={msg.id} className="p-4 hover:bg-[#FAF8F5] flex justify-between items-start gap-4">
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-1">
-                              <span className="font-bold text-[#8C734B] text-xs pb-0.5">{msg.senderName}</span>
-                              <span className="text-[10px] text-[#A69372] font-mono">
+                              <span className="font-bold text-[#5C6041] text-xs pb-0.5">{msg.senderName}</span>
+                              <span className="text-[10px] text-[#93a481] font-mono">
                                 {msg.createdAt?.toDate ? format(msg.createdAt.toDate(), 'dd/MM/yy HH:mm') : '—'}
                               </span>
                             </div>
@@ -1122,7 +1128,7 @@ export default function App() {
                         </div>
                       ))}
                       {messages.length === 0 && (
-                        <div className="p-8 text-center text-[#A69372] italic text-sm">O mural está vazio.</div>
+                        <div className="p-8 text-center text-[#93a481] italic text-sm">O mural está vazio.</div>
                       )}
                     </div>
                   </div>
@@ -1145,13 +1151,13 @@ export default function App() {
             <div className="max-w-4xl mx-auto p-6 md:py-12">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-12">
                 <div>
-                  <h2 className="text-4xl font-serif text-[#8C734B] mb-2 text-center md:text-left">Lista de Confirmados</h2>
-                  <p className="text-[#A69372] text-sm text-center md:text-left tracking-widest uppercase">Acompanhe seus convidados</p>
+                  <h2 className="text-4xl font-serif text-[#5C6041] mb-2 text-center md:text-left">Lista de Confirmados</h2>
+                  <p className="text-[#93a481] text-sm text-center md:text-left tracking-widest uppercase">Acompanhe seus convidados</p>
                 </div>
                 <div className="flex flex-wrap gap-4 justify-center md:justify-end">
                   <button 
                     onClick={() => setIsNoivaMode(false)}
-                    className="px-8 py-3 bg-[#8C734B] text-white text-xs font-bold uppercase tracking-widest rounded-full shadow-lg hover:bg-[#765F3A] transition-all"
+                    className="px-8 py-3 bg-[#5C6041] text-white text-xs font-bold uppercase tracking-widest rounded-full shadow-lg hover:opacity-90 transition-all"
                   >
                     Sair do Painel
                   </button>
@@ -1160,16 +1166,16 @@ export default function App() {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
                 <div className="bg-white p-6 rounded-2xl border border-[#E8E2D8] text-center">
-                  <span className="block text-[10px] font-bold uppercase tracking-widest text-[#A69372] mb-2">Total de Convidados</span>
-                  <p className="text-3xl font-serif text-[#8C734B]">50</p>
+                  <span className="block text-[10px] font-bold uppercase tracking-widest text-[#93a481] mb-2">Total de Convidados</span>
+                  <p className="text-3xl font-serif text-[#5C6041]">50</p>
                 </div>
                 <div className="bg-white p-6 rounded-2xl border border-[#E8E2D8] text-center">
-                  <span className="block text-[10px] font-bold uppercase tracking-widest text-[#A69372] mb-2">Confirmados</span>
-                  <p className="text-3xl font-serif text-[#8C734B]">{rsvpList.reduce((acc, curr) => acc + curr.count, 0)}</p>
+                  <span className="block text-[10px] font-bold uppercase tracking-widest text-[#93a481] mb-2">Confirmados</span>
+                  <p className="text-3xl font-serif text-[#5C6041]">{rsvpList.reduce((acc, curr) => acc + curr.count, 0)}</p>
                 </div>
                 <div className="bg-white p-6 rounded-2xl border border-[#E8E2D8] text-center">
-                  <span className="block text-[10px] font-bold uppercase tracking-widest text-[#A69372] mb-2">Porcentagem</span>
-                  <p className="text-3xl font-serif text-[#8C734B]">
+                  <span className="block text-[10px] font-bold uppercase tracking-widest text-[#93a481] mb-2">Porcentagem</span>
+                  <p className="text-3xl font-serif text-[#5C6041]">
                     {Math.round((rsvpList.reduce((acc, curr) => acc + curr.count, 0) / 50) * 100)}%
                   </p>
                 </div>
@@ -1188,13 +1194,13 @@ export default function App() {
                   <tbody className="divide-y divide-[#E8E2D8]">
                     {flatRsvpList.map((rsvp, index) => (
                       <tr key={rsvp.flatId} className="hover:bg-[#FAF8F5]">
-                        <td className="px-6 py-4 text-[#A69372] font-mono text-xs">
+                        <td className="px-6 py-4 text-[#93a481] font-mono text-xs">
                           {index + 1}
                         </td>
-                        <td className="px-6 py-4 font-medium text-[#4A4238] uppercase tracking-wide">
+                        <td className="px-6 py-4 font-medium text-[#5C6041] uppercase tracking-wide">
                           {rsvp.displayName}
                         </td>
-                        <td className="px-6 py-4 text-[10px] text-[#A69372] uppercase">
+                        <td className="px-6 py-4 text-[10px] text-[#93a481] uppercase">
                           {rsvp.createdAt?.toDate ? format(rsvp.createdAt.toDate(), 'dd/MM/yy HH:mm') : '—'}
                         </td>
                         <td className="px-6 py-4 text-right">
@@ -1217,7 +1223,7 @@ export default function App() {
                     ))}
                     {rsvpList.length === 0 && (
                       <tr>
-                        <td colSpan={3} className="px-6 py-12 text-center text-[#A69372] italic">Nenhuma confirmação recebida ainda.</td>
+                        <td colSpan={3} className="px-6 py-12 text-center text-[#93a481] italic">Nenhuma confirmação recebida ainda.</td>
                       </tr>
                     )}
                   </tbody>
