@@ -25,54 +25,17 @@ service cloud.firestore {
 
     // Gifts Collection
     match /gifts/{giftId} {
-      allow read: if true; // Publicly readable for guest list
-      
-      // Validation helper for Gift
-      function isValidGift(data) {
-        return data.keys().hasAll(['number', 'name', 'description', 'priceRange', 'status'])
-          && data.number is number
-          && data.name is string && data.name.size() > 0 && data.name.size() <= 100
-          && data.description is string && data.description.size() <= 500
-          && data.priceRange is string && data.priceRange.size() <= 50
-          && data.status in ['available', 'reserved'];
-      }
-
-      // Update gift: Reserve or Reset
-      allow update: if (
-        isValidId(giftId) &&
-        isValidGift(incoming()) &&
-        (
-          // Action: Reserve
-          (existing().status == "available" &&
-          incoming().status == "reserved" &&
-          incoming().reservedBy is string && incoming().reservedBy.size() > 0 && 
-          incoming().reservedBy.size() <= 100 &&
-          incoming().diff(existing()).affectedKeys().hasOnly(['status', 'reservedBy', 'updatedAt']))
-          ||
-          // Action: Reset (Disponibilizar)
-          (existing().status == "reserved" &&
-          incoming().status == "available" &&
-          incoming().keys().size() == existing().keys().size() - 1 && // reservedBy removed
-          incoming().diff(existing()).affectedKeys().hasOnly(['status', 'reservedBy', 'updatedAt']))
-          ||
-          // Generic update (might be needed for some clients or if we add more)
-          (incoming().diff(existing()).affectedKeys().hasOnly(['status', 'reservedBy', 'updatedAt']))
-        )
-      );
-
-      // Setup/Admin
-      allow create: if isValidId(giftId) && isValidGift(incoming());
+      allow read, write: if true;
     }
 
     // Messages Collection
     match /messages/{messageId} {
-      allow read, write: if true; // Publicly readable mural, unrestricted write for now
+      allow read, write: if true;
     }
 
     // RSVP Collection
     match /rsvp/{rsvpId} {
-      allow read, get, list: if true;
-      allow create, update, delete: if true;
+      allow read, write: if true;
     }
   }
 }

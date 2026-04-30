@@ -159,6 +159,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<'rsvp' | 'gifts' | 'messages'>('rsvp');
   const [showWelcome, setShowWelcome] = useState(true);
   const [gifts, setGifts] = useState<GiftItem[]>([]);
+  const [deletedGiftIds, setDeletedGiftIds] = useState<Set<string>>(new Set());
   const [messages, setMessages] = useState<GuestMessage[]>([]);
   const [rsvpList, setRsvpList] = useState<any[]>([]);
   const [isMadrinhaMode, setIsMadrinhaMode] = useState(false);
@@ -206,39 +207,20 @@ export default function App() {
   // Sync Gifts from Firestore
   useEffect(() => {
     const q = query(collection(db, 'gifts'), orderBy('number', 'asc'));
-    const unsubscribe = onSnapshot(q, async (snapshot) => {
-      // Se estiver vazio OU se tiver a lista antiga de teste,
-      // fazemos o reset automático para a nova lista oficial de 40 itens.
-      // Verificamos se algum documento tem o número 40 para saber se já migrou.
-      const hasFullList = snapshot.docs.some(doc => doc.data().number === 40);
-
-      if (snapshot.empty || (snapshot.size <= 10 && !hasFullList)) {
-        console.log("Migrando/Inicializando lista oficial...");
-        const batch = writeBatch(db);
-        
-        // Deleta os itens atuais (se houver)
-        snapshot.docs.forEach(d => batch.delete(d.ref));
-
-        // Adiciona a nova lista
-        INITIAL_GIFTS.forEach((g) => {
-          const docRef = doc(db, 'gifts', `gift-${g.number}`);
-          batch.set(docRef, g);
-        });
-
-        try {
-          await batch.commit();
-        } catch (e) {
-          console.error("Erro na carga inicial:", e);
-        }
-      } else {
-        const giftData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as GiftItem));
-        setGifts(giftData);
-      }
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const giftData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as GiftItem));
+      // Re-apply current optimistic filters
+      setGifts(giftData);
     }, (error) => {
       handleFirestoreError(error, OperationType.GET, 'gifts');
     });
     return unsubscribe;
-  }, [gifts.length]);
+  }, []);
+
+  // Filtered gifts for display - avoids resubscribing to onSnapshot
+  const displayedGifts = useMemo(() => {
+    return gifts.filter(g => !deletedGiftIds.has(g.id));
+  }, [gifts, deletedGiftIds]);
 
   // Sync Messages from Firestore
   useEffect(() => {
@@ -339,47 +321,99 @@ export default function App() {
   const handleSaveGift = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingGift) return;
+    if (!db) {
+      toast.error("Erro interno: Banco de dados não inicializado.");
+      return;
+    }
 
     setIsSubmitting(true);
     const loadingToast = toast.loading("Salvando presente...");
     
-    // Capturamos os dados e fechamos o modal imediatamente para velocidade percebida
-    const giftToSave = { ...editingGift };
-    setEditingGift(null);
-
     try {
-      const giftData = {
-        name: giftToSave.name,
-        description: giftToSave.description,
-        number: giftToSave.number || (gifts.length > 0 ? Math.max(...gifts.map(g => g.number)) + 1 : 1),
-        status: giftToSave.status || 'available'
+      const name = editingGift.name?.trim();
+      const description = editingGift.description?.trim();
+      
+      if (!name) {
+        toast.error("O nome do presente é obrigatório.", { id: loadingToast });
+        setIsSubmitting(false);
+        return;
+      }
+
+      const giftData: any = {
+        name,
+        description: description || "",
+        number: Number(editingGift.number) || (gifts.length > 0 ? Math.max(...gifts.map(g => g.number)) + 1 : 1),
+        status: editingGift.status || 'available',
+        updatedAt: serverTimestamp()
       };
 
-      if (giftToSave.id) {
-        await updateDoc(doc(db, 'gifts', giftToSave.id), giftData);
+      if (editingGift.id) {
+        console.log("Updating gift document:", editingGift.id, giftData);
+        await updateDoc(doc(db, 'gifts', editingGift.id), giftData);
         toast.success("Presente atualizado!", { id: loadingToast });
       } else {
-        const newDocRef = doc(collection(db, 'gifts'));
-        await setDoc(newDocRef, giftData);
+        console.log("Adding new gift document:", giftData);
+        await addDoc(collection(db, 'gifts'), giftData);
         toast.success("Presente adicionado!", { id: loadingToast });
       }
-    } catch (error) {
+      setEditingGift(null);
+    } catch (error: any) {
+      console.error("DEBUG: Error saving gift:", error);
+      toast.error(`Erro ao salvar: ${error.message || "Tente novamente"}`, { id: loadingToast });
       handleFirestoreError(error, OperationType.WRITE, 'gifts');
-      toast.error("Erro ao salvar presente.", { id: loadingToast });
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  const reorderGifts = async (currentGifts: GiftItem[]) => {
+    if (!db) return;
+    const batch = writeBatch(db);
+    // Sort items by existing number then by name to define the new sequence
+    const sorted = [...currentGifts].sort((a, b) => a.number - b.number);
+    
+    sorted.forEach((gift, index) => {
+      const newNumber = index + 1;
+      if (gift.number !== newNumber) {
+        batch.update(doc(db, 'gifts', gift.id), { number: newNumber });
+      }
+    });
+
+    try {
+      await batch.commit();
+      console.log("Renumbering complete");
+    } catch (error) {
+      console.error("Error renumbering gifts:", error);
+    }
+  };
+
   const handleDeleteGift = async (id: string) => {
-    if (!window.confirm("Tem certeza que deseja excluir este presente da lista?")) return;
+    if (!id || !db || isSubmitting) return;
+    
+    // We'll use a toast-based confirmation check instead of window.confirm if it's failing
+    // But for now, let's keep it simple and direct if they reported it "not working"
+    // Or better, let's ensure the loading state is global
     
     setIsSubmitting(true);
+    const loadingToast = toast.loading("Removendo da lista...");
+    
+    // Optimistically track deletion
+    setDeletedGiftIds(prev => new Set(prev).add(id));
+    
     try {
+      console.log("DEBUG: Deleting gift ID:", id);
       await deleteDoc(doc(db, 'gifts', id));
-      toast.success("Presente removido.");
-    } catch (error) {
-      handleFirestoreError(error, OperationType.DELETE, 'gifts');
+      toast.success("Item removido com sucesso!", { id: loadingToast });
+    } catch (error: any) {
+      console.error("DEBUG: Delete error:", error);
+      // Revert optimistic deletion on error
+      setDeletedGiftIds(prev => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
+      toast.error(`Erro ao remover: ${error.message || "Tente novamente"}`, { id: loadingToast });
+      handleFirestoreError(error, OperationType.DELETE, `gifts/${id}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -616,7 +650,10 @@ export default function App() {
           <div className="mb-6">
             <TulipIcon className="h-20 md:h-28 w-auto" />
           </div>
-          <h1 className="text-3xl sm:text-5xl md:text-8xl font-accent italic text-[#5C6041] mb-4 md:mb-6 tracking-tight leading-tight md:leading-none px-4">
+          <h1 
+            className="text-3xl sm:text-5xl md:text-8xl italic text-[#5C6041] mb-4 md:mb-6 tracking-tight leading-tight md:leading-none px-4"
+            style={{ fontFamily: 'Times New Roman, serif' }}
+          >
             Maria Eduarda & Gabriel
           </h1>
           <div className="flex flex-wrap items-center justify-center gap-2 md:gap-4 text-[#5C6041] uppercase tracking-[0.15em] md:tracking-[0.3em] font-light text-[10px] md:text-base px-4">
@@ -778,7 +815,8 @@ export default function App() {
                     </button>
                     <button 
                       onClick={handleResetAllGifts}
-                      className="text-[10px] uppercase tracking-widest text-[#5C6041] hover:text-[#4A4238] font-bold border border-[#5C6041]/30 px-6 py-2 rounded-full bg-white transition-all shadow-sm"
+                      disabled={isSubmitting}
+                      className="text-[10px] uppercase tracking-widest text-red-600 hover:text-white hover:bg-red-600 font-bold border border-red-200 px-6 py-2 rounded-full bg-white transition-all shadow-sm disabled:opacity-50"
                     >
                       Resetar Lista
                     </button>
@@ -796,7 +834,7 @@ export default function App() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {gifts.map((gift) => (
+                {displayedGifts.map((gift) => (
                   <motion.div
                     key={gift.id}
                     whileHover={{ y: -5 }}
@@ -823,23 +861,26 @@ export default function App() {
                       </h3>
                       <p className="text-[11px] md:text-xs text-[#93a481] mb-4 h-10 leading-snug line-clamp-2">{gift.description}</p>
                       <div className="flex flex-col gap-3 mt-6">
-                        <div className="flex items-center justify-end w-full">
+                        <div className="flex items-center justify-end w-full relative z-30">
                           <div className="flex gap-2">
                              {(isNoivaMode || isMadrinhaMode) && (
-                              <div className="flex gap-1 mr-2 border-r border-[#5C6041]/20 pr-2">
+                              <div className="flex gap-2 mr-2 border-r border-[#5C6041]/20 pr-2">
                                 <button 
                                   onClick={() => setEditingGift(gift)}
-                                  className="p-2 text-[#5C6041] hover:bg-[#5C6041]/10 rounded-full transition-colors"
-                                  title="Editar"
+                                  className="p-2 text-[#5C6041] hover:bg-[#5C6041]/10 rounded-full transition-all cursor-pointer"
+                                  title="Editar presente"
                                 >
-                                  <Pencil size={14} />
+                                  <Pencil size={15} />
                                 </button>
                                 <button 
-                                  onClick={() => handleDeleteGift(gift.id)}
-                                  className="p-2 text-red-400 hover:bg-red-50 rounded-full transition-colors"
-                                  title="Excluir"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleDeleteGift(gift.id);
+                                  }}
+                                  className="p-2.5 text-red-500 bg-red-50 hover:bg-red-100 rounded-full transition-all cursor-pointer relative z-40 shadow-sm"
+                                  title="Excluir item"
                                 >
-                                  <Trash2 size={14} />
+                                  <Trash2 size={16} />
                                 </button>
                               </div>
                             )}
@@ -973,7 +1014,10 @@ export default function App() {
           viewport={{ once: true }}
           className="space-y-6"
         >
-          <p className="font-accent italic text-4xl md:text-5xl text-[#5C6041] leading-none">
+          <p 
+            className="italic text-4xl md:text-5xl text-[#5C6041] leading-none"
+            style={{ fontFamily: 'Times New Roman, serif' }}
+          >
             Maria Eduarda & Gabriel
           </p>
           <div className="flex flex-col items-center">
@@ -1285,7 +1329,7 @@ export default function App() {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-[#E8E2D8]">
-                        {gifts.map(gift => (
+                        {displayedGifts.map(gift => (
                           <tr key={gift.id} className="hover:bg-[#FAF8F5]">
                             <td className="px-6 py-4 text-[#5C6041] font-mono">#{gift.number}</td>
                             <td className="px-6 py-4 font-medium text-[#4A4238]">{gift.name}</td>
@@ -1301,21 +1345,24 @@ export default function App() {
                             <td className="px-6 py-4 font-medium">
                               {gift.reservedBy || "—"}
                             </td>
-                            <td className="px-6 py-4 text-right">
-                              <div className="flex justify-end gap-2">
+                            <td className="px-6 py-4 text-right border-l border-[#E8E2D8]">
+                              <div className="flex justify-end gap-3 px-2">
                                 <button 
                                   onClick={() => setEditingGift(gift)}
-                                  className="p-2 text-[#5C6041] hover:bg-[#5C6041]/10 rounded-full transition-colors"
-                                  title="Editar"
+                                  className="p-2 text-[#5C6041] hover:bg-[#5C6041]/10 rounded-full transition-all cursor-pointer"
+                                  title="Editar informações"
                                 >
-                                  <Pencil size={14} />
+                                  <Pencil size={15} />
                                 </button>
                                 <button 
-                                  onClick={() => handleDeleteGift(gift.id)}
-                                  className="p-2 text-red-400 hover:bg-red-50 rounded-full transition-colors"
-                                  title="Excluir"
+                                  onClick={() => {
+                                    console.log("Delete button clicked for gift:", gift.id);
+                                    handleDeleteGift(gift.id);
+                                  }}
+                                  className="p-2.5 text-red-500 bg-red-50 hover:bg-red-100 rounded-full transition-all cursor-pointer shadow-md relative z-30"
+                                  title="Remover definitivamente"
                                 >
-                                  <Trash2 size={14} />
+                                  <Trash2 size={16} />
                                 </button>
                                 {gift.status === 'reserved' && (
                                   <button 
