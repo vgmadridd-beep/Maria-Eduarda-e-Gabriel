@@ -88,7 +88,7 @@ interface GuestMessage {
 // --- Icons ---
 const TulipIcon = ({ className }: { className?: string }) => (
   <img 
-    src="https://images.unsplash.com/photo-1520330960252-878536127bc4?auto=format&fit=crop&q=80&w=600" 
+    src="https://i.imgur.com/dP46MF3.png" 
     alt="Tulipas" 
     className={`${className} object-contain`}
     referrerPolicy="no-referrer"
