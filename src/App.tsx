@@ -25,7 +25,9 @@ import {
   X,
   ShieldCheck,
   Send,
-  Trash2
+  Trash2,
+  Plus,
+  Pencil
 } from 'lucide-react';
 import { Toaster, toast } from 'react-hot-toast';
 import { format } from 'date-fns';
@@ -97,16 +99,46 @@ const TulipIcon = ({ className }: { className?: string }) => (
 
 // --- Initial Data ---
 const INITIAL_GIFTS = [
-  { number: 1, name: "Jogo de Jantar 42 Peças", description: "Porcelana branca sofisticada", priceRange: "R$ 400 - R$ 600", status: "available" },
-  { number: 2, name: "Air Fryer 4L", description: "Para as receitas saudáveis do casal", priceRange: "R$ 350 - R$ 500", status: "available" },
-  { number: 3, name: "Conjunto de Panelas", description: "Indução, antiaderente premium", priceRange: "R$ 600 - R$ 900", status: "available" },
-  { number: 4, name: "Liquidificador Digital", description: "Alta potência e design moderno", priceRange: "R$ 250 - R$ 400", status: "available" },
-  { number: 5, name: "Aparelho de Fondue", description: "Para noites românticas de inverno", priceRange: "R$ 150 - R$ 300", status: "available" },
-  { number: 6, name: "Robô Aspirador", description: "O melhor amigo da limpeza", priceRange: "R$ 800 - R$ 1200", status: "available" },
-  { number: 7, name: "Jogo de Toalhas Banho", description: "Algodão egípcio, toque macio", priceRange: "R$ 200 - R$ 350", status: "available" },
-  { number: 8, name: "Máquina de Café", description: "Espresso e cápsulas para os noivos", priceRange: "R$ 500 - R$ 800", status: "available" },
-  { number: 9, name: "Kit para Churrasco", description: "Maleta com 18 peças aço inox", priceRange: "R$ 180 - R$ 300", status: "available" },
-  { number: 10, name: "Edredom King Size", description: "Toque de seda para o novo lar", priceRange: "R$ 300 - R$ 500", status: "available" },
+  { number: 1, name: "Liquidificador (preto)", description: "Potente e versátil para a cozinha", status: "available" },
+  { number: 2, name: "Batedeira (preta)", description: "Ideal para massas e bolos", status: "available" },
+  { number: 3, name: "Chaleira elétrica (preta)", description: "Praticidade para chás e cafés", status: "available" },
+  { number: 4, name: "Garrafa térmica (inox)(preta)", description: "3 unidades - Conserva a temperatura", status: "available" },
+  { number: 5, name: "Mop (que tem franja)", description: "Facilita a limpeza diária", status: "available" },
+  { number: 6, name: "Panela de pressão (preta)", description: "Segurança e rapidez no cozimento", status: "available" },
+  { number: 7, name: "Kit peças de churrasco", description: "Utensílios essenciais para churrasco", status: "available" },
+  { number: 8, name: "Faqueiro Brinox", description: "Conjunto completo e resistente", status: "available" },
+  { number: 9, name: "Ventilador (preto)", description: "Conforto térmico para o lar", status: "available" },
+  { number: 10, name: "Jogo de panelas (preto ou cinza)", description: "Antiaderente de alta qualidade", status: "available" },
+  { number: 11, name: "Aparelho de jantar (claro)", description: "Elegância para as refeições", status: "available" },
+  { number: 12, name: "Jogo de toalhas (corpo e rosto)", description: "Maciez e absorção", status: "available" },
+  { number: 13, name: "★ Jogo de lençol King", description: "Conforto para noites de sono", status: "available" },
+  { number: 14, name: "Cafeteira (preta)", description: "Aroma de café fresco todos os dias", status: "available" },
+  { number: 15, name: "Pano de prato", description: "Kit com panos de alta absorção", status: "available" },
+  { number: 16, name: "Sanduicheira (preta)", description: "Lanches rápidos e crocantes", status: "available" },
+  { number: 17, name: "Taças de sobremesa (vidro)", description: "Para servir doces com estilo", status: "available" },
+  { number: 18, name: "Travessas (vidro)", description: "Resistentes ao forno e elegantes", status: "available" },
+  { number: 19, name: "Ferro de passar", description: "Roupas impecáveis sempre", status: "available" },
+  { number: 20, name: "Varal de chão", description: "Prático e resistente", status: "available" },
+  { number: 21, name: "Cesto de roupa (cinza) tampa de madeira", description: "Organização com design", status: "available" },
+  { number: 22, name: "Potes (8) de variados tamanhos", description: "Organização hermética para alimentos", status: "available" },
+  { number: 23, name: "Tábua de passar", description: "Estrutura firme e forro térmico", status: "available" },
+  { number: 24, name: "Cobertor King", description: "Aconchego para os dias frios", status: "available" },
+  { number: 25, name: "Manta (cinza, branco, verde claro, beige)", description: "Leveza e conforto", status: "available" },
+  { number: 26, name: "Edredom", description: "Qualidade e maciez para a cama", status: "available" },
+  { number: 27, name: "Aquecedor", description: "Ambiente quentinho no inverno", status: "available" },
+  { number: 28, name: "Travesseiro (2)", description: "Suporte ideal para o descanso", status: "available" },
+  { number: 29, name: "Kit de frigideira (preto ou cinza)", description: "Durabilidade e praticidade", status: "available" },
+  { number: 30, name: "Formas de bolo", description: "Conjunto diversificado", status: "available" },
+  { number: 31, name: "Toalha de mesa (cor clara)", description: "Para jantares especiais", status: "available" },
+  { number: 32, name: "4 Porta-retratos (brancos)", description: "Para eternizar nossos momentos", status: "available" },
+  { number: 33, name: "8 caixas organizadoras — pequena", description: "Ordem para os pequenos itens", status: "available" },
+  { number: 34, name: "8 caixas organizadoras — média", description: "Ideal para armários e closets", status: "available" },
+  { number: 35, name: "8 caixas organizadoras — grande", description: "Máxima organização", status: "available" },
+  { number: 36, name: "Potes organizadores (Vidro/Bambu)", description: "Herméticos e transparentes ou de vidro com tampa de bambu", status: "available" },
+  { number: 37, name: "Relógio de parede (branco)", description: "Minimalista e funcional", status: "available" },
+  { number: 38, name: "Porta-talheres (branco ou cinza)", description: "Organização interna de gavetas", status: "available" },
+  { number: 39, name: "Porta-temperos (Vidro/Bambu)", description: "Herméticos ou de vidro, tampa de bambu", status: "available" },
+  { number: 40, name: "Conjunto de utensílios (Silicone/Madeira)", description: "Cabo de madeira preto (cinza)", status: "available" },
 ];
 
 export default function App() {
@@ -135,6 +167,7 @@ export default function App() {
   const [noivaPassword, setNoivaPassword] = useState('');
   const [showMadrinhaModal, setShowMadrinhaModal] = useState(false);
   const [showNoivaModal, setShowNoivaModal] = useState(false);
+  const [editingGift, setEditingGift] = useState<Partial<GiftItem> | null>(null);
   const [selectedGift, setSelectedGift] = useState<GiftItem | null>(null);
   const [reservationName, setReservationName] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -173,13 +206,22 @@ export default function App() {
   // Sync Gifts from Firestore
   useEffect(() => {
     const q = query(collection(db, 'gifts'), orderBy('number', 'asc'));
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      if (snapshot.empty) {
+    const unsubscribe = onSnapshot(q, async (snapshot) => {
+      // Se estiver vazio OU se tiver exatamente 10 itens (a lista antiga de teste),
+      // fazemos o reset automático para a nova lista oficial de 40 itens.
+      if (snapshot.empty || (snapshot.size === 10 && !gifts.find(g => g.number === 40))) {
+        console.log("Migrando para a lista oficial de 40 itens...");
+        
+        // Deleta os itens antigos
+        const deletePromises = snapshot.docs.map(d => deleteDoc(d.ref));
+        await Promise.all(deletePromises);
+
+        // Adiciona a nova lista
         INITIAL_GIFTS.forEach(async (g) => {
           try {
              await setDoc(doc(db, 'gifts', `gift-${g.number}`), g);
           } catch (e) {
-            console.error("Initial data sync error:", e);
+            console.error("Erro na migração inicial:", e);
           }
         });
       } else {
@@ -190,7 +232,7 @@ export default function App() {
       handleFirestoreError(error, OperationType.GET, 'gifts');
     });
     return unsubscribe;
-  }, []);
+  }, [gifts.length]);
 
   // Sync Messages from Firestore
   useEffect(() => {
@@ -252,6 +294,76 @@ export default function App() {
     } catch (error) {
       toast.error("Erro ao reservar presente.");
       handleFirestoreError(error, OperationType.WRITE, giftPath);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleResetAllGifts = async () => {
+    if (!window.confirm("Isso apagará todas as reservas atuais e resetará a lista para os 40 itens oficiais. Tem certeza?")) return;
+    
+    setIsSubmitting(true);
+    const loadingToast = toast.loading("Resetando lista...");
+    try {
+      const q = query(collection(db, 'gifts'));
+      const snapshot = await getDocs(q);
+      const deletePromises = snapshot.docs.map(d => deleteDoc(d.ref));
+      await Promise.all(deletePromises);
+
+      const addPromises = INITIAL_GIFTS.map(g => 
+        setDoc(doc(db, 'gifts', `gift-${g.number}`), g)
+      );
+      await Promise.all(addPromises);
+      
+      toast.success("Lista resetada com sucesso!", { id: loadingToast });
+    } catch (error: any) {
+      console.error("Erro ao resetar lista:", error);
+      toast.error("Erro ao resetar lista.", { id: loadingToast });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleSaveGift = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingGift) return;
+
+    setIsSubmitting(true);
+    const loadingToast = toast.loading("Salvando presente...");
+    try {
+      const giftData = {
+        name: editingGift.name,
+        description: editingGift.description,
+        number: editingGift.number || (gifts.length > 0 ? Math.max(...gifts.map(g => g.number)) + 1 : 1),
+        status: editingGift.status || 'available'
+      };
+
+      if (editingGift.id) {
+        await updateDoc(doc(db, 'gifts', editingGift.id), giftData);
+        toast.success("Presente atualizado!", { id: loadingToast });
+      } else {
+        const newDocRef = doc(collection(db, 'gifts'));
+        await setDoc(newDocRef, giftData);
+        toast.success("Presente adicionado!", { id: loadingToast });
+      }
+      setEditingGift(null);
+    } catch (error) {
+      handleFirestoreError(error, OperationType.WRITE, 'gifts');
+      toast.error("Erro ao salvar presente.", { id: loadingToast });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleDeleteGift = async (id: string) => {
+    if (!window.confirm("Tem certeza que deseja excluir este presente da lista?")) return;
+    
+    setIsSubmitting(true);
+    try {
+      await deleteDoc(doc(db, 'gifts', id));
+      toast.success("Presente removido.");
+    } catch (error) {
+      handleFirestoreError(error, OperationType.DELETE, 'gifts');
     } finally {
       setIsSubmitting(false);
     }
@@ -640,6 +752,23 @@ export default function App() {
                   <div className="h-[1px] flex-1 bg-[#5C6041]/30" />
                 </motion.div>
 
+                {(isNoivaMode || isMadrinhaMode) && (
+                  <div className="flex flex-wrap justify-center gap-3 mt-6">
+                    <button 
+                      onClick={() => setEditingGift({ name: '', description: '', priceRange: '', status: 'available' })}
+                      className="text-[10px] uppercase tracking-widest text-white bg-[#5C6041] hover:bg-[#4A4238] font-bold px-8 py-3 rounded-full transition-all shadow-md flex items-center gap-2"
+                    >
+                      <Plus className="w-4 h-4" /> Adicionar Presente
+                    </button>
+                    <button 
+                      onClick={handleResetAllGifts}
+                      className="text-[10px] uppercase tracking-widest text-[#5C6041] hover:text-[#4A4238] font-bold border border-[#5C6041]/30 px-6 py-2 rounded-full bg-white transition-all shadow-sm"
+                    >
+                      Resetar Lista
+                    </button>
+                  </div>
+                )}
+
                 <div className="mt-8 md:mt-12 bg-[#FAF8F5] p-3 rounded-lg border border-[#5C6041]/10 flex flex-col items-center justify-center gap-2 md:gap-3 max-w-md mx-auto">
                   <div className="flex items-center gap-3">
                     <div className="w-4 h-4 flex items-center justify-center rounded-full bg-[#5C6041]/60 text-white text-[8px] font-bold shrink-0">!</div>
@@ -677,17 +806,55 @@ export default function App() {
                         {gift.name}
                       </h3>
                       <p className="text-[11px] md:text-xs text-[#93a481] mb-4 h-10 leading-snug line-clamp-2">{gift.description}</p>
-                      <div className="flex items-center justify-between mt-6">
-                        <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-[#93a481]">
-                          {gift.priceRange}
-                        </span>
-                        {gift.status !== 'reserved' && (
-                          <button
-                            onClick={() => setSelectedGift(gift)}
-                            className="text-[10px] md:text-xs bg-[#FAF8F5] border border-[#5C6041]/40 px-3 md:px-4 py-1.5 md:py-2 rounded-full hover:bg-[#5C6041] hover:text-white transition-all font-medium"
-                          >
-                            Escolher
-                          </button>
+                      <div className="flex flex-col gap-3 mt-6">
+                        <div className="flex items-center justify-end w-full">
+                          <div className="flex gap-2">
+                             {(isNoivaMode || isMadrinhaMode) && (
+                              <div className="flex gap-1 mr-2 border-r border-[#5C6041]/20 pr-2">
+                                <button 
+                                  onClick={() => setEditingGift(gift)}
+                                  className="p-2 text-[#5C6041] hover:bg-[#5C6041]/10 rounded-full transition-colors"
+                                  title="Editar"
+                                >
+                                  <Pencil size={14} />
+                                </button>
+                                <button 
+                                  onClick={() => handleDeleteGift(gift.id)}
+                                  className="p-2 text-red-400 hover:bg-red-50 rounded-full transition-colors"
+                                  title="Excluir"
+                                >
+                                  <Trash2 size={14} />
+                                </button>
+                              </div>
+                            )}
+                            {gift.status !== 'reserved' ? (
+                              <button
+                                onClick={() => setSelectedGift(gift)}
+                                className="text-[10px] md:text-xs bg-[#FAF8F5] border border-[#5C6041]/40 px-3 md:px-4 py-1.5 md:py-2 rounded-full hover:bg-[#5C6041] hover:text-white transition-all font-medium"
+                              >
+                                Escolher
+                              </button>
+                            ) : (
+                               <div className="flex items-center gap-1.5 text-[9px] font-bold text-[#5C6041] uppercase tracking-widest">
+                                 <CheckCircle2 className="w-3.5 h-3.5" /> Reservado
+                               </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {(isNoivaMode || isMadrinhaMode) && gift.status === 'reserved' && (
+                          <div className="mt-2 pt-2 border-t border-dashed border-[#5C6041]/20 flex flex-col gap-2">
+                            <p className="text-[10px] text-[#5C6041] font-medium flex items-center gap-1.5">
+                              <CheckCircle2 className="w-3" />
+                              Reservado por: <span className="font-bold">{gift.reservedBy}</span>
+                            </p>
+                            <button 
+                              onClick={() => handleResetGift(gift.id)}
+                              className="text-[9px] uppercase tracking-wider text-red-500 hover:text-red-700 font-bold self-start"
+                            >
+                              Disponibilizar novamente
+                            </button>
+                          </div>
                         )}
                       </div>
                     </div>
@@ -817,11 +984,89 @@ export default function App() {
       </footer>
 
       {/* --- Modals --- */}
+
+      {/* Gift Editor Modal */}
+      <AnimatePresence>
+        {editingGift && (
+          <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setEditingGift(null)}
+              className="absolute inset-0 bg-[#4A4238]/60 backdrop-blur-sm"
+            />
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="relative bg-white rounded-2xl shadow-2xl p-6 md:p-10 max-w-lg w-full overflow-hidden z-10"
+              style={{ border: '1px solid rgba(92, 96, 65, 0.2)' }}
+            >
+              <button 
+                onClick={() => setEditingGift(null)}
+                className="absolute top-6 right-6 text-[#5C6041]/40 hover:text-[#5C6041]"
+              >
+                <X size={24} />
+              </button>
+              
+              <div className="mb-8">
+                <h2 className="text-2xl font-serif text-[#5C6041] mb-2">
+                  {editingGift.id ? 'Editar Presente' : 'Novo Presente'}
+                </h2>
+                <p className="text-sm text-[#93a481]">Preencha os detalhes do item na lista.</p>
+              </div>
+
+              <form onSubmit={handleSaveGift} className="space-y-6">
+                <div>
+                  <label className="block text-[10px] uppercase tracking-widest font-bold text-[#5C6041] mb-2">Nome do Presente</label>
+                  <input
+                    required
+                    value={editingGift.name || ''}
+                    onChange={(e) => setEditingGift({...editingGift, name: e.target.value})}
+                    placeholder="Ex: Liquidificador Turbo (Preto)"
+                    className="w-full bg-[#FAF8F5] border border-[#5C6041]/20 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#5C6041]/30 transition-all text-[#4A4238]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] uppercase tracking-widest font-bold text-[#5C6041] mb-2">Descrição / Dica</label>
+                  <textarea
+                    required
+                    rows={3}
+                    value={editingGift.description || ''}
+                    onChange={(e) => setEditingGift({...editingGift, description: e.target.value})}
+                    placeholder="Ex: De preferência da marca X ou cor Y..."
+                    className="w-full bg-[#FAF8F5] border border-[#5C6041]/20 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#5C6041]/30 transition-all text-[#4A4238] resize-none"
+                  />
+                </div>
+
+                <div className="flex gap-4 pt-4">
+                  <button
+                    type="button"
+                    onClick={() => setEditingGift(null)}
+                    className="flex-1 px-6 py-4 rounded-xl border border-[#5C6041]/20 text-[#5C6041] font-bold text-[11px] uppercase tracking-widest hover:bg-gray-50 transition-all"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="flex-1 px-6 py-4 rounded-xl bg-[#5C6041] text-white font-bold text-[11px] uppercase tracking-widest hover:bg-[#4A4238] transition-all disabled:opacity-50 shadow-lg shadow-[#5C6041]/20"
+                  >
+                    {isSubmitting ? 'Salvando...' : 'Salvar'}
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
       
       {/* Reservation Modal */}
       <AnimatePresence>
         {selectedGift && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -989,13 +1234,24 @@ export default function App() {
           >
             <div className="max-w-5xl mx-auto p-6 md:py-12">
               <div className="flex items-center justify-between mb-8">
-                <h2 className="text-3xl font-serif text-[#5C6041]">Painel da Madrinha</h2>
-                <button 
-                  onClick={() => setIsMadrinhaMode(false)}
-                  className="px-6 py-2 bg-[#5C6041] text-white text-[10px] font-bold uppercase tracking-widest rounded-full"
-                >
-                  Sair do Painel
-                </button>
+                <div>
+                  <h2 className="text-3xl font-serif text-[#5C6041]">Painel da Madrinha</h2>
+                  <p className="text-xs text-[#93a481] uppercase tracking-widest mt-1">Gestão de convidados e presentes</p>
+                </div>
+                <div className="flex gap-4">
+                  <button 
+                    onClick={() => setEditingGift({ name: '', description: '', priceRange: '', status: 'available' })}
+                    className="px-6 py-2 bg-white text-[#5C6041] border border-[#5C6041] text-[10px] font-bold uppercase tracking-widest rounded-full hover:bg-[#5C6041] hover:text-white transition-all flex items-center gap-2"
+                  >
+                    <Plus size={14} /> Novo Presente
+                  </button>
+                  <button 
+                    onClick={() => setIsMadrinhaMode(false)}
+                    className="px-6 py-2 bg-[#5C6041] text-white text-[10px] font-bold uppercase tracking-widest rounded-full"
+                  >
+                    Sair do Painel
+                  </button>
+                </div>
               </div>
 
               <div className="space-y-12">
@@ -1030,15 +1286,31 @@ export default function App() {
                               {gift.reservedBy || "—"}
                             </td>
                             <td className="px-6 py-4 text-right">
-                              {gift.status === 'reserved' && (
+                              <div className="flex justify-end gap-2">
                                 <button 
-                                  onClick={() => handleResetGift(gift.id)}
-                                  disabled={isSubmitting}
-                                  className="text-[10px] bg-red-50 text-red-600 px-3 py-1 rounded border border-red-100 hover:bg-red-100 transition-colors uppercase font-bold"
+                                  onClick={() => setEditingGift(gift)}
+                                  className="p-2 text-[#5C6041] hover:bg-[#5C6041]/10 rounded-full transition-colors"
+                                  title="Editar"
                                 >
-                                  Resetar
+                                  <Pencil size={14} />
                                 </button>
-                              )}
+                                <button 
+                                  onClick={() => handleDeleteGift(gift.id)}
+                                  className="p-2 text-red-400 hover:bg-red-50 rounded-full transition-colors"
+                                  title="Excluir"
+                                >
+                                  <Trash2 size={14} />
+                                </button>
+                                {gift.status === 'reserved' && (
+                                  <button 
+                                    onClick={() => handleResetGift(gift.id)}
+                                    disabled={isSubmitting}
+                                    className="text-[10px] bg-red-50 text-red-600 px-3 py-1 rounded border border-red-100 hover:bg-red-100 transition-colors uppercase font-bold"
+                                  >
+                                    Resetar
+                                  </button>
+                                )}
+                              </div>
                             </td>
                           </tr>
                         ))}
