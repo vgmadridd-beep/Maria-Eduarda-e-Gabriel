@@ -11,7 +11,8 @@ import {
   setDoc,
   deleteField,
   getDocs,
-  deleteDoc
+  deleteDoc,
+  writeBatch
 } from 'firebase/firestore';
 import { signInAnonymously } from 'firebase/auth';
 import { db, auth } from './firebase';
@@ -75,7 +76,6 @@ interface GiftItem {
   number: number;
   name: string;
   description: string;
-  priceRange: string;
   status: 'available' | 'reserved';
   reservedBy?: string;
 }
@@ -207,23 +207,29 @@ export default function App() {
   useEffect(() => {
     const q = query(collection(db, 'gifts'), orderBy('number', 'asc'));
     const unsubscribe = onSnapshot(q, async (snapshot) => {
-      // Se estiver vazio OU se tiver exatamente 10 itens (a lista antiga de teste),
+      // Se estiver vazio OU se tiver a lista antiga de teste,
       // fazemos o reset automático para a nova lista oficial de 40 itens.
-      if (snapshot.empty || (snapshot.size === 10 && !gifts.find(g => g.number === 40))) {
-        console.log("Migrando para a lista oficial de 40 itens...");
+      // Verificamos se algum documento tem o número 40 para saber se já migrou.
+      const hasFullList = snapshot.docs.some(doc => doc.data().number === 40);
+
+      if (snapshot.empty || (snapshot.size <= 10 && !hasFullList)) {
+        console.log("Migrando/Inicializando lista oficial...");
+        const batch = writeBatch(db);
         
-        // Deleta os itens antigos
-        const deletePromises = snapshot.docs.map(d => deleteDoc(d.ref));
-        await Promise.all(deletePromises);
+        // Deleta os itens atuais (se houver)
+        snapshot.docs.forEach(d => batch.delete(d.ref));
 
         // Adiciona a nova lista
-        INITIAL_GIFTS.forEach(async (g) => {
-          try {
-             await setDoc(doc(db, 'gifts', `gift-${g.number}`), g);
-          } catch (e) {
-            console.error("Erro na migração inicial:", e);
-          }
+        INITIAL_GIFTS.forEach((g) => {
+          const docRef = doc(db, 'gifts', `gift-${g.number}`);
+          batch.set(docRef, g);
         });
+
+        try {
+          await batch.commit();
+        } catch (e) {
+          console.error("Erro na carga inicial:", e);
+        }
       } else {
         const giftData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as GiftItem));
         setGifts(giftData);
@@ -307,13 +313,19 @@ export default function App() {
     try {
       const q = query(collection(db, 'gifts'));
       const snapshot = await getDocs(q);
-      const deletePromises = snapshot.docs.map(d => deleteDoc(d.ref));
-      await Promise.all(deletePromises);
+      
+      const batch = writeBatch(db);
+      
+      // 1. Delete all existing gifts
+      snapshot.docs.forEach(d => batch.delete(d.ref));
 
-      const addPromises = INITIAL_GIFTS.map(g => 
-        setDoc(doc(db, 'gifts', `gift-${g.number}`), g)
-      );
-      await Promise.all(addPromises);
+      // 2. Add INITIAL_GIFTS
+      INITIAL_GIFTS.forEach(g => {
+        const docRef = doc(db, 'gifts', `gift-${g.number}`);
+        batch.set(docRef, g);
+      });
+
+      await batch.commit();
       
       toast.success("Lista resetada com sucesso!", { id: loadingToast });
     } catch (error: any) {
@@ -330,23 +342,27 @@ export default function App() {
 
     setIsSubmitting(true);
     const loadingToast = toast.loading("Salvando presente...");
+    
+    // Capturamos os dados e fechamos o modal imediatamente para velocidade percebida
+    const giftToSave = { ...editingGift };
+    setEditingGift(null);
+
     try {
       const giftData = {
-        name: editingGift.name,
-        description: editingGift.description,
-        number: editingGift.number || (gifts.length > 0 ? Math.max(...gifts.map(g => g.number)) + 1 : 1),
-        status: editingGift.status || 'available'
+        name: giftToSave.name,
+        description: giftToSave.description,
+        number: giftToSave.number || (gifts.length > 0 ? Math.max(...gifts.map(g => g.number)) + 1 : 1),
+        status: giftToSave.status || 'available'
       };
 
-      if (editingGift.id) {
-        await updateDoc(doc(db, 'gifts', editingGift.id), giftData);
+      if (giftToSave.id) {
+        await updateDoc(doc(db, 'gifts', giftToSave.id), giftData);
         toast.success("Presente atualizado!", { id: loadingToast });
       } else {
         const newDocRef = doc(collection(db, 'gifts'));
         await setDoc(newDocRef, giftData);
         toast.success("Presente adicionado!", { id: loadingToast });
       }
-      setEditingGift(null);
     } catch (error) {
       handleFirestoreError(error, OperationType.WRITE, 'gifts');
       toast.error("Erro ao salvar presente.", { id: loadingToast });
@@ -755,7 +771,7 @@ export default function App() {
                 {(isNoivaMode || isMadrinhaMode) && (
                   <div className="flex flex-wrap justify-center gap-3 mt-6">
                     <button 
-                      onClick={() => setEditingGift({ name: '', description: '', priceRange: '', status: 'available' })}
+                      onClick={() => setEditingGift({ name: '', description: '', status: 'available' })}
                       className="text-[10px] uppercase tracking-widest text-white bg-[#5C6041] hover:bg-[#4A4238] font-bold px-8 py-3 rounded-full transition-all shadow-md flex items-center gap-2"
                     >
                       <Plus className="w-4 h-4" /> Adicionar Presente
@@ -1240,7 +1256,7 @@ export default function App() {
                 </div>
                 <div className="flex gap-4">
                   <button 
-                    onClick={() => setEditingGift({ name: '', description: '', priceRange: '', status: 'available' })}
+                    onClick={() => setEditingGift({ name: '', description: '', status: 'available' })}
                     className="px-6 py-2 bg-white text-[#5C6041] border border-[#5C6041] text-[10px] font-bold uppercase tracking-widest rounded-full hover:bg-[#5C6041] hover:text-white transition-all flex items-center gap-2"
                   >
                     <Plus size={14} /> Novo Presente
