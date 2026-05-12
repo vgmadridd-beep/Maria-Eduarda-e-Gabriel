@@ -658,7 +658,7 @@ export default function App() {
           </h1>
           <div className="flex flex-wrap items-center justify-center gap-2 md:gap-4 text-[#5C6041] uppercase tracking-[0.15em] md:tracking-[0.3em] font-light text-[10px] md:text-base px-4">
             <div className="hidden sm:block h-px w-4 md:w-8 bg-[#5C6041]/30" />
-            <span>1 de Agosto de 2026</span>
+            <span>2 DE AGOSTO DE 2026</span>
             <div className="hidden sm:block h-px w-4 md:w-8 bg-[#5C6041]/30" />
           </div>
           <p className="mt-6 md:mt-8 font-serif italic text-sm md:text-lg text-[#93a481] max-w-2xl mx-auto px-6 leading-relaxed">
